@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+
+<html lang="en" class="responsive" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script>
+        window.dataLayer = window.dataLayer || []; if (typeof gtag != 'function') { gtag = function () {window.dataLayer.push(arguments); }; }
+        gtag('consent', 'default', { ad_storage: 'denied', analytics_storage: 'denied', functionality_storage: 'denied', personalization_storage: 'denied', security_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
+        window.dataLayer.push({
+            'pageTitle': 'LogIn'
+        });
+
+    </script>
+<script>window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({ 'IsLoggedIn' : 'no'});
+</script><meta name="msvalidate.01" content="C5E8148C29FFCEF733AE141A0ED25879" />
+  <!-- Google Tag Manager -->
+   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.defer=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;j.addEventListener('load', function() { var _ge = new CustomEvent('gtm_loaded', { bubbles: true }); d.dispatchEvent(_ge); }); f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-LF22');</script>
+    <!-- End Google Tag Manager --><!-- OneTrust Cookies Consent Notice start for guru.com --><script src="https://cdn.cookielaw.org/consent/1cd4ff69-4e04-482d-b238-f3486c88e426/otSDKStub.js" data-document-language="true" type="text/javascript" charset="UTF-8" data-domain-script="1cd4ff69-4e04-482d-b238-f3486c88e426"></script><script type="text/javascript">function OptanonWrapper() { }</script><!-- OneTrust Cookies Consent Notice end for guru.com --><title>
+	Guru Login - Log In to Your Guru.com Account
+</title>
+    <!-- Disabling compatibility mode for Internet Explorer -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmEU9fBBc4.woff2" as="font" type="font/woff2" integrity="sha384-ZE0elpJD7VmJPXd+yIJjDx+LUfYWhPzKFMzNcWAzDr90PCecqUrVIwO/xW/cmhUm" crossorigin="anonymous">
+    <link rel="preload" href="https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2" as="font" type="font/woff2" integrity="sha384-u+CfGz269lpzKHziEFiGn6hcNZmDAEMr7CqNzJiz1oXunEPynPyPVEmmBHFMiTNN" crossorigin="anonymous">
+    <link href='https://img-guru.com/20260422.1/css/marketing2019/AppSignedOut.0de17dd497f91054.css' rel='stylesheet' type='text/css'  />    
+    <script src="https://img-guru.com/20260422.1/js/bundles/login-bundle.1c355cabbc40f0c6.js" defer></script>
+
+    <!-- X Card -->
+    <meta name="twitter:card"
+        content="summary">
+    <meta name="twitter:url"
+        content="https://www.guru.com/login.aspx">
+    <meta name="twitter:title"
+        content="Guru Login - Log In to Your Guru.com Account">
+    <meta name="twitter:description"
+        content="Log in to your Guru account to hire and find Freelancers or to search for project work and get hired.">
+    <meta name="twitter:image"
+        content="https://wp.guru.com/blog/wp-content/uploads/2020/05/Guru-200x200-1.jpg">
+
+    <!-- Facebook -->
+    <meta property="og:image"
+        content="https://www.guru.com/images/guru_logo_fb200.png" />
+    <meta property="og:type"
+        content="website" />
+    <meta property="og:url"
+        content="https://www.guru.com/login.aspx" />
+    <meta property="og:site_name"
+        content="Guru" />
+    <meta property="og:title"
+        content="Guru Login - Log In to Your Guru.com Account" />
+    <meta property="og:description"
+        content="Log in to your Guru account to hire and find Freelancers or to search for project work and get hired." />
+
+    <meta name="description"
+        content="Log in to your Guru account to hire and find Freelancers or to search for project work and get hired." />
+    <meta name="viewport"
+
+        content="initial-scale=1">
+    <link rel="canonical"
+        href="https://www.guru.com/login.aspx">
+<meta name="Keywords" content="sign,log,in,employer,freelancer, account,register,new,member,guru.com" /><meta name="ROBOTS" content="noodp, nodir, index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" /></head>
+<body class="registerAccount">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-LF22"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+ 
+
+
+
+<header role="banner">
+    <nav class="c-header c-header--solid"
+        id="navigation" role="navigation" aria-label="Primary Navigation" data-stickyafter="false" > 
+        <div class="o-container">
+            <div class="c-header__row">
+                
+                <div class="c-header__row__logo logo-center">
+                    <a id="topnav-gurulogo" href="/index.aspx?Ref=login.aspx" aria-label="Guru" title="Guru" style="display:flex">
+                        <svg class="c-header__logo" role="img" aria-label="Guru Home" alt="Guru" viewBox="0 0 250.7 56.8" height="30" width="130" enable-background="new 0 0 250.7 56.8" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g>
+                                <title id="logo-title">Guru</title>
+                                <path d="M162.4 9.2v16.1c0 5.5-6.6 10.1-14.5 10.1 -7.9 0-14.5-4.6-14.5-10.1V9.4h-5.9v15.8c0 8.8 9.2 16 20.4 16 11.3 0 20.4-7.2 20.4-16V9.2H162.4z"></path>
+                                <path d="M244.8 9.2v16.1c0 5.5-6.6 10.1-14.5 10.1 -7.9 0-14.5-4.6-14.5-10.1V9.4h-5.9v15.8c0 8.8 9.2 16 20.4 16 11.3 0 20.4-7.2 20.4-16V9.2H244.8z"></path>
+                                <path d="M178.6 41.3h-5.9V9.2h5.9v13c9.2-12 26-13 26.2-13l0.3 5.9C204 15.2 178.6 16.7 178.6 41.3z"></path>
+                                <path d="M118 9.2v4.8c-3.7-2.9-8.8-4.8-14.5-4.8 -11.3 0-20.4 7.2-20.4 16 0 8.8 9.2 16 20.4 16 5.7 0 10.8-1.8 14.5-4.8v4.3c0 5.5-6.6 10.1-14.5 10.1 -6.3 0-11.8-3-13.7-7l-5.7 1.8c2.6 6.5 10.4 11.2 19.4 11.2 11 0 20-6.9 20.4-15.5h0V9.2H118zM103.5 35.3c-7.9 0-14.5-4.6-14.5-10.1 0-5.5 6.6-10.1 14.5-10.1 7.9 0 14.5 4.6 14.5 10.1C118 30.7 111.4 35.3 103.5 35.3z"></path>
+                                <path d="M46.6 33.9c2.8 0.7 5.5 1.6 8.1 2.9 2.6 1.2 4.9 2.7 7.1 4.4 2.2 1.7 4.2 3.6 6.1 5.7 1.9 2.1 3.5 4.3 4.9 6.8H62.3c-1.6-1.9-3.3-3.6-5.2-5.1 -1.9-1.5-4-2.8-6.2-3.9 -2.2-1.1-4.5-1.9-6.9-2.5 -2.4-0.6-4.9-0.9-7.6-0.9 -2.7 0-5.2 0.3-7.7 0.9 -2.5 0.6-4.8 1.4-6.9 2.5 -2.2 1.1-4.2 2.4-6.1 3.9 -1.9 1.5-3.7 3.2-5.2 5.1H0c1.4-2.5 3-4.7 4.9-6.9 1.9-2.1 3.9-4 6.2-5.7 2.3-1.7 4.7-3.1 7.2-4.3 2.6-1.2 5.3-2.2 8.1-2.9 -2.5-0.6-4.8-1.4-6.9-2.4 -2.2-1-4.2-2.2-6.2-3.6 -2-1.4-3.8-2.9-5.5-4.6 -1.7-1.7-3.2-3.6-4.6-5.5 0.7-1.1 1.4-2.1 2.3-3.1 0.8-1 1.7-1.9 2.6-2.8S9.9 10 11 9.2c1-0.8 2-1.6 3-2.3 0.1-0.9 0.3-1.7 0.7-2.4 0.4-0.7 0.9-1.4 1.5-2 0.6-0.6 1.3-1.1 2.1-1.4 0.8-0.3 1.6-0.5 2.5-0.5 1 0 1.9 0.2 2.7 0.6 0.8 0.4 1.6 0.9 2.2 1.5 0.6 0.6 1.2 1.4 1.5 2.2C27.8 5.8 28 6.7 28 7.7c0 1-0.2 1.9-0.6 2.7 -0.4 0.8-0.9 1.6-1.5 2.2 -0.6 0.6-1.4 1.1-2.2 1.5 -0.8 0.3-1.7 0.5-2.7 0.5 -0.2 0-0.4 0-0.7 0 -0.2 0-0.5 0-0.7-0.1 -0.2 0-0.4-0.1-0.7-0.2 -0.2-0.1-0.5-0.2-0.7-0.3 -0.4 0.3-0.8 0.6-1.1 0.9 -0.3 0.3-0.7 0.6-1.1 0.9 -0.4 0.3-0.8 0.6-1.1 0.9 -0.3 0.3-0.7 0.6-1 1 1.5 1.4 3 2.7 4.7 3.8 1.7 1.2 3.5 2.2 5.4 2.9 1.9 0.8 3.9 1.4 6 1.8 2.1 0.4 4.3 0.7 6.4 0.7 2.2 0 4.3-0.2 6.4-0.7 2.1-0.4 4.1-1.1 6-1.8 1.9-0.8 3.7-1.8 5.4-2.9 1.7-1.2 3.2-2.5 4.7-3.8h0.1c0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-1 0.2-1.9 0.5-2.8 0.3-0.9 0.9-1.7 1.5-2.4 0.7-0.7 1.5-1.2 2.4-1.5 0.9-0.3 1.8-0.5 2.8-0.5 1 0 1.9 0.2 2.8 0.5 0.9 0.3 1.6 0.9 2.3 1.5 0.6 0.7 1.2 1.5 1.5 2.4 0.4 0.9 0.6 1.8 0.6 2.8 0 1-0.2 1.9-0.6 2.8 -0.4 0.9-0.9 1.6-1.5 2.3 -0.6 0.6-1.4 1.2-2.3 1.5 -0.9 0.4-1.8 0.6-2.8 0.6 -0.2 0-0.3 0-0.4 0 -0.1 0-0.2 0-0.4 0 -0.1 0-0.3 0-0.4-0.1 -0.1 0-0.2-0.1-0.4-0.1 -1.2 1.2-2.5 2.3-3.9 3.4 -1.4 1.1-2.9 2.1-4.4 2.9 -1.5 0.9-3.1 1.7-4.8 2.4C50.1 33 48.3 33.5 46.6 33.9z"></path>
+                                <path fill="currentColor" id="arch" d="M32 8.7c0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3s0-0.2 0-0.3c0-0.6-0.1-1.2-0.1-1.8 -0.1-0.6-0.2-1.3-0.4-1.8 -0.2-0.6-0.5-1.2-0.8-1.7 -0.3-0.5-0.7-1.1-1-1.5 0.5-0.1 1-0.2 1.6-0.2 0.6 0 1.2-0.1 1.8-0.1 0.6 0 1.2-0.1 1.8-0.1C35.4 0 36 0 36.5 0c2.2 0 4.3 0.2 6.4 0.5 2.1 0.3 4.1 0.8 6.1 1.5 2 0.6 3.9 1.4 5.7 2.4 1.8 0.9 3.6 2 5.2 3.2 -0.6 0.4-1.1 0.9-1.6 1.4 -0.5 0.5-0.9 1.1-1.3 1.7 -0.3 0.6-0.7 1.2-1 1.9 -0.3 0.7-0.5 1.4-0.6 2.1 -1.3-1-2.7-1.9-4.2-2.7 -1.5-0.8-3.1-1.4-4.6-2 -1.6-0.5-3.2-0.9-4.9-1.2 -1.7-0.2-3.5-0.4-5.2-0.4 -0.4 0-0.8 0-1.2 0 -0.4 0-0.8 0-1.2 0 -0.4 0-0.8 0-1.1 0.1C32.7 8.5 32.4 8.6 32 8.7z"></path>
+                                <path d="M29.9 18.3c0-1 0.2-1.9 0.6-2.7 0.4-0.8 0.9-1.6 1.5-2.2 0.6-0.6 1.4-1.2 2.2-1.5 0.8-0.4 1.7-0.6 2.7-0.6 1 0 1.9 0.2 2.8 0.6 0.9 0.4 1.6 0.9 2.3 1.5 0.6 0.6 1.1 1.4 1.5 2.2 0.3 0.8 0.5 1.7 0.5 2.7 0 1-0.2 1.9-0.5 2.7 -0.3 0.8-0.8 1.6-1.5 2.2 -0.6 0.6-1.4 1.2-2.3 1.5 -0.9 0.4-1.8 0.6-2.8 0.6 -1 0-1.9-0.2-2.7-0.6 -0.8-0.4-1.6-0.9-2.2-1.5 -0.6-0.6-1.2-1.4-1.5-2.2C30.1 20.2 29.9 19.3 29.9 18.3z"></path>
+                            </g>      
+                        </svg>
+                    </a>
+                    <span class="u-sr-only">Guru</span>
+                </div>
+                
+                            
+            </div>
+        </div>
+    </nav>
+    
+    
+</header>
+
+<script src="https://img-guru.com/20260422.1/js/marketing/navigation.min.js" async defer></script>
+
+
+    
+    <form method="post" action="./login.aspx?ReturnUrl=https%3a%2f%2fwww.guru.com%2fworkroom%2fsearch%2f%3fkeyword%3dphotographer" id="aspnetForm">
+<div>
+<input type="hidden" name="WebAPIURL" id="WebAPIURL" value="https://www.guru.com/api/v1/" />
+<input type="hidden" name="MSAPIURL" id="MSAPIURL" value="https://www.guru.com/" />
+<input type="hidden" name="ctl00_scriptMgr_HiddenField" id="ctl00_scriptMgr_HiddenField" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTI5ODk0MDE0Ng8WAh4TVmFsaWRhdGVSZXF1ZXN0TW9kZQIBFgJmD2QWBgIBD2QWBAIBDxYCHgRUZXh0BdwFPHNjcmlwdD53aW5kb3cuZGF0YUxheWVyID0gd2luZG93LmRhdGFMYXllciB8fCBbXTsNCndpbmRvdy5kYXRhTGF5ZXIucHVzaCh7ICdJc0xvZ2dlZEluJyA6ICdubyd9KTsNCjwvc2NyaXB0PjxtZXRhIG5hbWU9Im1zdmFsaWRhdGUuMDEiIGNvbnRlbnQ9IkM1RTgxNDhDMjlGRkNFRjczM0FFMTQxQTBFRDI1ODc5IiAvPg0KICA8IS0tIEdvb2dsZSBUYWcgTWFuYWdlciAtLT4NCiAgIDxzY3JpcHQ+KGZ1bmN0aW9uKHcsZCxzLGwsaSl7d1tsXT13W2xdfHxbXTt3W2xdLnB1c2goeydndG0uc3RhcnQnOm5ldyBEYXRlKCkuZ2V0VGltZSgpLGV2ZW50OidndG0uanMnfSk7dmFyIGY9ZC5nZXRFbGVtZW50c0J5VGFnTmFtZShzKVswXSwgaj1kLmNyZWF0ZUVsZW1lbnQocyksZGw9bCE9J2RhdGFMYXllcic/JyZsPScrbDonJztqLmRlZmVyPXRydWU7ai5zcmM9J2h0dHBzOi8vd3d3Lmdvb2dsZXRhZ21hbmFnZXIuY29tL2d0bS5qcz9pZD0nK2krZGw7ai5hZGRFdmVudExpc3RlbmVyKCdsb2FkJywgZnVuY3Rpb24oKSB7IHZhciBfZ2UgPSBuZXcgQ3VzdG9tRXZlbnQoJ2d0bV9sb2FkZWQnLCB7IGJ1YmJsZXM6IHRydWUgfSk7IGQuZGlzcGF0Y2hFdmVudChfZ2UpOyB9KTsgZi5wYXJlbnROb2RlLmluc2VydEJlZm9yZShqLGYpO30pKHdpbmRvdyxkb2N1bWVudCwnc2NyaXB0JywnZGF0YUxheWVyJywnR1RNLUxGMjInKTs8L3NjcmlwdD4NCiAgICA8IS0tIEVuZCBHb29nbGUgVGFnIE1hbmFnZXIgLS0+ZAICDxYCHwEFowM8IS0tIE9uZVRydXN0IENvb2tpZXMgQ29uc2VudCBOb3RpY2Ugc3RhcnQgZm9yIGd1cnUuY29tIC0tPjxzY3JpcHQgc3JjPSJodHRwczovL2Nkbi5jb29raWVsYXcub3JnL2NvbnNlbnQvMWNkNGZmNjktNGUwNC00ODJkLWIyMzgtZjM0ODZjODhlNDI2L290U0RLU3R1Yi5qcyIgZGF0YS1kb2N1bWVudC1sYW5ndWFnZT0idHJ1ZSIgdHlwZT0idGV4dC9qYXZhc2NyaXB0IiBjaGFyc2V0PSJVVEYtOCIgZGF0YS1kb21haW4tc2NyaXB0PSIxY2Q0ZmY2OS00ZTA0LTQ4MmQtYjIzOC1mMzQ4NmM4OGU0MjYiPjwvc2NyaXB0PjxzY3JpcHQgdHlwZT0idGV4dC9qYXZhc2NyaXB0Ij5mdW5jdGlvbiBPcHRhbm9uV3JhcHBlcigpIHsgfTwvc2NyaXB0PjwhLS0gT25lVHJ1c3QgQ29va2llcyBDb25zZW50IE5vdGljZSBlbmQgZm9yIGd1cnUuY29tIC0tPmQCAw9kFgJmDxYCHwEF/gE8IS0tIEdvb2dsZSBUYWcgTWFuYWdlciAobm9zY3JpcHQpIC0tPg0KICAgIDxub3NjcmlwdD48aWZyYW1lIHNyYz0iaHR0cHM6Ly93d3cuZ29vZ2xldGFnbWFuYWdlci5jb20vbnMuaHRtbD9pZD1HVE0tTEYyMiINCiAgICBoZWlnaHQ9IjAiIHdpZHRoPSIwIiBzdHlsZT0iZGlzcGxheTpub25lO3Zpc2liaWxpdHk6aGlkZGVuIj48L2lmcmFtZT48L25vc2NyaXB0Pg0KICAgIDwhLS0gRW5kIEdvb2dsZSBUYWcgTWFuYWdlciAobm9zY3JpcHQpIC0tPmQCBQ9kFgICAw9kFgICBw8WAh8BZWRksMS2eK7cBIpnSdvomTlWhmki9b8=" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=zF6aTLPqvoYxtja59DpNWrWQ5kNViCz0_iGc4X9AcYR1AYhEp-DSgcoShC9gknLrECMlqdINrTrwXdzDhwejpXk4PSY1&amp;t=638901526312636832" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+if(typeof angular != 'undefined') { angular.module('guru.common.debugConstants', []).constant('publishedInDebugMode', false)};//]]>
+</script>
+
+<script src="/ScriptResource.axd?d=WKHGifGr30F1ge4QGKlwjiy3HATn_xXyrcbf46fRYwJ5xzPHKP4gSOgVIQb9kuPRIz3YMbv_yqixwlKpAKyVIpY8xgHDF5h7JT_CsgxEbLO2hisnnfX7Th5gBY8FKO6Vmo4zzQ2&amp;t=60b7ac5d" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=vhJNBpYimVXyaiiaOToDxJQItiZzRvB9X8hy8NFJKEV4DMLlvV1iPuJxLAph0zSbsu0FgIiEiUeZfwgoPH-Qd3ZisL6UMM-YLN56a-luL0A1EV0G6u-70G6QZspOU42Eh2FQDQ2&amp;t=60b7ac5d" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="C2EE9ABB" />
+</div>
+        <div id="ctl00_pnlSm">
+	
+            <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$scriptMgr', 'aspnetForm', [], ['ctl00$scriptMgr',''], [], 90, 'ctl00');
+	//]]>
+</script>
+<input type="hidden" name="ctl00$scriptMgr" id="ctl00_scriptMgr" />
+<script type="text/javascript">
+//<![CDATA[
+Sys.Application.setServerId("ctl00_scriptMgr", "ctl00$scriptMgr");
+	Sys.Application._enableHistoryInScriptManager();
+	//]]>
+</script>
+
+        
+</div>
+        
+        <section class="main">
+            
+    <input type="hidden"
+        id="hdnCaptchaSiteKey"
+        class="CaptchaSiteKey"
+        value="6LflaSYUAAAAALxgnMwat8bd88pyEcsOPYwdPHZ4" />
+    <input type="hidden"
+        id="hdnIsCaptchaEnabled"
+        class="IsCaptchaEnabled"
+        value="True" />
+    <input name="ctl00$ContentPlaceHolder1$hdnLinkedInClntID" type="hidden" id="ctl00_ContentPlaceHolder1_hdnLinkedInClntID" class="linkedInClientID" value="77aj4w1f86tc9b" />
+    <input name="ctl00$ContentPlaceHolder1$hdnLinkedInRedirectURI" type="hidden" id="ctl00_ContentPlaceHolder1_hdnLinkedInRedirectURI" class="linkedInRedirectURI" value="handleLinkedInAuthCode.aspx" />
+    <input name="ctl00$ContentPlaceHolder1$hdnGooglePlusClntID" type="hidden" id="ctl00_ContentPlaceHolder1_hdnGooglePlusClntID" class="googlePlusClientID" value="130090623010-1785qcncrqfi1uv1ge0btt8nspiv2spj.apps.googleusercontent.com" />
+    <input name="ctl00$ContentPlaceHolder1$hdnFacebookClntID" type="hidden" id="ctl00_ContentPlaceHolder1_hdnFacebookClntID" class="facebookClientID" value="797387497025842" />
+    <input name="ctl00$ContentPlaceHolder1$hdnFacebookClntAPIVer" type="hidden" id="ctl00_ContentPlaceHolder1_hdnFacebookClntAPIVer" class="facebookClientAPIVer" value="v23.0" />
+    <input name="ctl00$ContentPlaceHolder1$hdnAppleClntID" type="hidden" id="ctl00_ContentPlaceHolder1_hdnAppleClntID" class="appleClientID" value="com.guru.marketplace.applesignin" />
+    <input name="ctl00$ContentPlaceHolder1$hdnAppleRedirectURI" type="hidden" id="ctl00_ContentPlaceHolder1_hdnAppleRedirectURI" class="appleRedirectURI" value="https://www.guru.com" />
+
+
+    <div class="o-container">
+        <div id="vue-login-app"><h1 style="color:white;">Log In</h1></div>
+    </div>
+    <script>
+        var isCaptchaEnabled = "True";
+        function onloadCallback() {
+        if (isCaptchaEnabled.toLowerCase() == 'true') {
+        window.isCaptchaLoaded=true;
+		var checkingInterval = setInterval(function () {
+			if (window.grecaptcha && window.app) {
+				 window.app.emitter.emit("onloadCallbackCaptcha");
+                 clearInterval(checkingInterval);
+			}
+		}, 500);
+            }
+        }
+        function callVerifyCaptcha(token) {
+            window.app.emitter.emit("verifyCaptcha", token);
+        }
+    </script>        
+
+    <script src="https://accounts.google.com/gsi/client"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/2.0.3/fingerprint2.min.js"
+        defer integrity="sha384-kxtaLtyEBFFw7VsIvZxVT8tWqhyBoADsNhMIq7/PTD7hIEmcYMbt9zqmeSWyOO2z" crossorigin="anonymous"></script>
+    <script src="https://img-guru.com/20260422.1/js/Admin/FingerprintInfo.js"
+        defer></script>
+    <script type="text/javascript">
+        var googlePlusClientID = document.getElementsByClassName('googlePlusClientID')[0].value;
+        const auth2 = google.accounts.oauth2.initTokenClient({
+            client_id: googlePlusClientID,
+            // Request scopes in addition to 'profile' and 'email'
+            scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/plus.me',
+            callback: (response) => {
+                if (response.error) {
+                    alert("We could not login you. There is some issue with Google+ login right now")
+                }
+                else {
+                    onSignIn(response)
+                }
+            },
+            error_callback: (error) => {
+                console.error(error.message)
+            }
+        });
+
+        var f_obj = '';
+
+        document.addEventListener('DOMContentLoaded', function (event) {
+            getFingerprintDetails().then(function (data) {
+                f_obj = data[2];
+            })
+        })
+    </script>
+    <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"  crossorigin="anonymous"></script>
+    
+
+    <script>
+        var IPQf_obj = '';
+        if (typeof Startup !== "undefined") {
+            Startup.AfterResult(function (result) {
+                IPQf_obj = JSON.stringify(result);
+            });
+        }
+    </script>
+
+
+        </section> 
+    <input type="hidden" name="ctl00$hdnGuid" id="ctl00_hdnGuid" value="GUID" />
+<script src='https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit' async defer></script>
+<script type="text/javascript">
+//<![CDATA[
+function onPostBack(){ 
+var y=generateRandomSequence(); 
+var hdnGuid=document.getElementById('ctl00_hdnGuid'); 
+hdnGuid.value = y; 
+} 
+
+function generateRandomSequence(){ 
+var g = ''; 
+for(var i = 0; i < 32; i++) 
+g += Math.floor(Math.random() * 0xF).toString(0xF)  
+return g  
+}  
+(function() {var fn = function() {$get("ctl00_scriptMgr_HiddenField").value = '';Sys.Application.remove_init(fn);};Sys.Application.add_init(fn);})();//]]>
+</script>
+</form>
+<script type="text/javascript" src="/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=7&cb=1534178883" async></script></body>
+</html>

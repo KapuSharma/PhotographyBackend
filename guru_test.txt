@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html class="responsive">
+<head>
+    <!-- Disabling compatibility mode for Internet Explorer -->
+    <title>Guru.com - Page Not Found</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+    <meta name="viewport" content="initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+        .pageNotFound {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5rem 0;
+            font-family: "Roboto", sans-serif;
+        }
+        .pageNotFound__title,
+        .pageNotFound__subtitle,
+        .pageNotFound__figure__mobile,
+        .pageNotFound__cta {
+            margin-bottom: 1.5rem;
+        }
+        .pageNotFound__figure {
+            display: none;
+        }
+        .pageNotFound__figure__mobile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .pageNotFound__title {
+            position: relative;
+            font-weight: 600;
+            font-size: 2rem;
+            line-height: 1.24;
+            font-family: "Roboto", sans-serif;
+            padding-right: 40px;
+        }
+
+        .pageNotFound__subtitle {
+            font-size: 1rem;
+            margin-bottom: 3rem;
+            color: #666;
+        }
+        .pageNotFound__cta {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        .pageNotFound__cta a {
+            width: 100%;
+        }
+        .pageNotFound__cta__or {
+            font-size: 1rem;
+            color: #aaa;
+            margin-right: 1.5rem;
+            margin-left: 1.5rem;
+        }
+        @media screen and (min-width: 600px) {
+            .pageNotFound__figure {
+                display: block;
+                margin-left: 3rem;
+            }
+            .pageNotFound__figure__mobile {
+                display: none;
+            }
+        }
+        @media screen and (min-width: 840px) {
+            .pageNotFound__title {
+                font-size: 2.5rem;
+            }
+            .pageNotFound__cta {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+            .pageNotFound__cta a {
+                width: auto;
+            }
+        }
+        @media screen and (min-width: 1110px) {
+            .pageNotFound__title {
+                font-size: 3rem;
+            }
+        }
+
+    </style>
+</head>
+<body class="headerNotFixed">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-LF22"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+ 
+
+<link href='https://img-guru.com/20260422.1/css/marketing2019/AppSignedOut.css' rel='stylesheet' type='text/css' defer /><link href='https://img-guru.com/20260422.1/css/appshell/core.css' rel='stylesheet' type='text/css' defer />
+    
+ 
+
+<header role="banner">
+    <nav class="c-header c-header--solid"
+        id="navigation" role="navigation" aria-label="Primary Navigation" data-stickyafter="false" > 
+        <div class="o-container">
+            <div class="c-header__row">
+                
+                <div  class="c-header__row__menu">
+                    <button id="nav_menu_btn" aria-label="Menu" class="c-header__menu">
+                        <svg preserveAspectRatio="xMidYMid meet" focusable="false" alt="Menu" viewBox="0 0 24 24">
+                             <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+                        </svg>
+                    </button>
+                </div>
+                
+                
+                <div class="c-header__row__logo logo-center">
+                    <a id="topnav-gurulogo" href="/index.aspx?Ref=login.aspx" aria-label="Guru" title="Guru" style="display:flex">
+                        <svg class="c-header__logo" role="img" aria-label="Guru Home" alt="Guru" viewBox="0 0 250.7 56.8" height="30" width="130" enable-background="new 0 0 250.7 56.8" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                            <g>
+                                <title id="logo-title">Guru</title>
+                                <path d="M162.4 9.2v16.1c0 5.5-6.6 10.1-14.5 10.1 -7.9 0-14.5-4.6-14.5-10.1V9.4h-5.9v15.8c0 8.8 9.2 16 20.4 16 11.3 0 20.4-7.2 20.4-16V9.2H162.4z"></path>
+                                <path d="M244.8 9.2v16.1c0 5.5-6.6 10.1-14.5 10.1 -7.9 0-14.5-4.6-14.5-10.1V9.4h-5.9v15.8c0 8.8 9.2 16 20.4 16 11.3 0 20.4-7.2 20.4-16V9.2H244.8z"></path>
+                                <path d="M178.6 41.3h-5.9V9.2h5.9v13c9.2-12 26-13 26.2-13l0.3 5.9C204 15.2 178.6 16.7 178.6 41.3z"></path>
+                                <path d="M118 9.2v4.8c-3.7-2.9-8.8-4.8-14.5-4.8 -11.3 0-20.4 7.2-20.4 16 0 8.8 9.2 16 20.4 16 5.7 0 10.8-1.8 14.5-4.8v4.3c0 5.5-6.6 10.1-14.5 10.1 -6.3 0-11.8-3-13.7-7l-5.7 1.8c2.6 6.5 10.4 11.2 19.4 11.2 11 0 20-6.9 20.4-15.5h0V9.2H118zM103.5 35.3c-7.9 0-14.5-4.6-14.5-10.1 0-5.5 6.6-10.1 14.5-10.1 7.9 0 14.5 4.6 14.5 10.1C118 30.7 111.4 35.3 103.5 35.3z"></path>
+                                <path d="M46.6 33.9c2.8 0.7 5.5 1.6 8.1 2.9 2.6 1.2 4.9 2.7 7.1 4.4 2.2 1.7 4.2 3.6 6.1 5.7 1.9 2.1 3.5 4.3 4.9 6.8H62.3c-1.6-1.9-3.3-3.6-5.2-5.1 -1.9-1.5-4-2.8-6.2-3.9 -2.2-1.1-4.5-1.9-6.9-2.5 -2.4-0.6-4.9-0.9-7.6-0.9 -2.7 0-5.2 0.3-7.7 0.9 -2.5 0.6-4.8 1.4-6.9 2.5 -2.2 1.1-4.2 2.4-6.1 3.9 -1.9 1.5-3.7 3.2-5.2 5.1H0c1.4-2.5 3-4.7 4.9-6.9 1.9-2.1 3.9-4 6.2-5.7 2.3-1.7 4.7-3.1 7.2-4.3 2.6-1.2 5.3-2.2 8.1-2.9 -2.5-0.6-4.8-1.4-6.9-2.4 -2.2-1-4.2-2.2-6.2-3.6 -2-1.4-3.8-2.9-5.5-4.6 -1.7-1.7-3.2-3.6-4.6-5.5 0.7-1.1 1.4-2.1 2.3-3.1 0.8-1 1.7-1.9 2.6-2.8S9.9 10 11 9.2c1-0.8 2-1.6 3-2.3 0.1-0.9 0.3-1.7 0.7-2.4 0.4-0.7 0.9-1.4 1.5-2 0.6-0.6 1.3-1.1 2.1-1.4 0.8-0.3 1.6-0.5 2.5-0.5 1 0 1.9 0.2 2.7 0.6 0.8 0.4 1.6 0.9 2.2 1.5 0.6 0.6 1.2 1.4 1.5 2.2C27.8 5.8 28 6.7 28 7.7c0 1-0.2 1.9-0.6 2.7 -0.4 0.8-0.9 1.6-1.5 2.2 -0.6 0.6-1.4 1.1-2.2 1.5 -0.8 0.3-1.7 0.5-2.7 0.5 -0.2 0-0.4 0-0.7 0 -0.2 0-0.5 0-0.7-0.1 -0.2 0-0.4-0.1-0.7-0.2 -0.2-0.1-0.5-0.2-0.7-0.3 -0.4 0.3-0.8 0.6-1.1 0.9 -0.3 0.3-0.7 0.6-1.1 0.9 -0.4 0.3-0.8 0.6-1.1 0.9 -0.3 0.3-0.7 0.6-1 1 1.5 1.4 3 2.7 4.7 3.8 1.7 1.2 3.5 2.2 5.4 2.9 1.9 0.8 3.9 1.4 6 1.8 2.1 0.4 4.3 0.7 6.4 0.7 2.2 0 4.3-0.2 6.4-0.7 2.1-0.4 4.1-1.1 6-1.8 1.9-0.8 3.7-1.8 5.4-2.9 1.7-1.2 3.2-2.5 4.7-3.8h0.1c0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-1 0.2-1.9 0.5-2.8 0.3-0.9 0.9-1.7 1.5-2.4 0.7-0.7 1.5-1.2 2.4-1.5 0.9-0.3 1.8-0.5 2.8-0.5 1 0 1.9 0.2 2.8 0.5 0.9 0.3 1.6 0.9 2.3 1.5 0.6 0.7 1.2 1.5 1.5 2.4 0.4 0.9 0.6 1.8 0.6 2.8 0 1-0.2 1.9-0.6 2.8 -0.4 0.9-0.9 1.6-1.5 2.3 -0.6 0.6-1.4 1.2-2.3 1.5 -0.9 0.4-1.8 0.6-2.8 0.6 -0.2 0-0.3 0-0.4 0 -0.1 0-0.2 0-0.4 0 -0.1 0-0.3 0-0.4-0.1 -0.1 0-0.2-0.1-0.4-0.1 -1.2 1.2-2.5 2.3-3.9 3.4 -1.4 1.1-2.9 2.1-4.4 2.9 -1.5 0.9-3.1 1.7-4.8 2.4C50.1 33 48.3 33.5 46.6 33.9z"></path>
+                                <path fill="currentColor" id="arch" d="M32 8.7c0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3s0-0.2 0-0.3c0-0.6-0.1-1.2-0.1-1.8 -0.1-0.6-0.2-1.3-0.4-1.8 -0.2-0.6-0.5-1.2-0.8-1.7 -0.3-0.5-0.7-1.1-1-1.5 0.5-0.1 1-0.2 1.6-0.2 0.6 0 1.2-0.1 1.8-0.1 0.6 0 1.2-0.1 1.8-0.1C35.4 0 36 0 36.5 0c2.2 0 4.3 0.2 6.4 0.5 2.1 0.3 4.1 0.8 6.1 1.5 2 0.6 3.9 1.4 5.7 2.4 1.8 0.9 3.6 2 5.2 3.2 -0.6 0.4-1.1 0.9-1.6 1.4 -0.5 0.5-0.9 1.1-1.3 1.7 -0.3 0.6-0.7 1.2-1 1.9 -0.3 0.7-0.5 1.4-0.6 2.1 -1.3-1-2.7-1.9-4.2-2.7 -1.5-0.8-3.1-1.4-4.6-2 -1.6-0.5-3.2-0.9-4.9-1.2 -1.7-0.2-3.5-0.4-5.2-0.4 -0.4 0-0.8 0-1.2 0 -0.4 0-0.8 0-1.2 0 -0.4 0-0.8 0-1.1 0.1C32.7 8.5 32.4 8.6 32 8.7z"></path>
+                                <path d="M29.9 18.3c0-1 0.2-1.9 0.6-2.7 0.4-0.8 0.9-1.6 1.5-2.2 0.6-0.6 1.4-1.2 2.2-1.5 0.8-0.4 1.7-0.6 2.7-0.6 1 0 1.9 0.2 2.8 0.6 0.9 0.4 1.6 0.9 2.3 1.5 0.6 0.6 1.1 1.4 1.5 2.2 0.3 0.8 0.5 1.7 0.5 2.7 0 1-0.2 1.9-0.5 2.7 -0.3 0.8-0.8 1.6-1.5 2.2 -0.6 0.6-1.4 1.2-2.3 1.5 -0.9 0.4-1.8 0.6-2.8 0.6 -1 0-1.9-0.2-2.7-0.6 -0.8-0.4-1.6-0.9-2.2-1.5 -0.6-0.6-1.2-1.4-1.5-2.2C30.1 20.2 29.9 19.3 29.9 18.3z"></path>
+                            </g>      
+                        </svg>
+                    </a>
+                    <span class="u-sr-only">Guru</span>
+                </div>
+                
+                
+                <div class="c-header__row__navigation">
+                    <a class="c-header__navigationItem c-header__link" href="/d/freelancers/" title="Find a Freelancer" id="topnav-find-a-guru">
+                        Find Freelancers
+                    </a>
+
+                    <a class="c-header__navigationItem c-header__link" href="/d/jobs/" title="Find a Job" id="topnav-find-a-job">
+                       Find Jobs
+                    </a>
+                    
+                    <div class="c-header__navigationItem c-header__dropdown">
+                        <span class="c-header__link c-header__dropdown__trigger">
+                            About  
+                            <svg height="8" width="8" style="margin-top:-4px;" viewBox="0 0 32 32" class="u-svg-ico">
+                                <path d="M28.8 6.2L16 19 3.2 6.2 0 9.4l16 16.4L32 9.4z"></path>
+                            </svg>
+                        </span>
+                        <div class="c-header__dropdown__menu">
+                            <a href="/about/" class="c-header__link c-header__dropdown__menu__link" title="About Guru" id="topnav-about"> About Guru </a>
+                            <a href="/how-it-works/" class="c-header__link c-header__dropdown__menu__link" title="How Guru Works" id="topnav-how-it-works"> How Guru Works </a>
+                            <a href="/why-guru/" class="c-header__link c-header__dropdown__menu__link" title="Why Guru" id="topnav-whyguru"> Why Guru </a>
+                            <a href="/pricing-employer/" class="c-header__link c-header__dropdown__menu__link" title="Pricing" id="topnav-pricing"> Pricing </a>
+                            <a href="/blog/" class="c-header__link c-header__dropdown__menu__link" title="Blog" id="topnav-blog"> Blog </a>
+
+                        </div>
+                    </div>
+
+                    <div class="c-header__navigationItem c-header__dropdown">
+                        <span class="c-header__link c-header__dropdown__trigger">
+                            Solutions  
+                            <svg height="8" width="8" style="margin-top:-4px;" viewBox="0 0 32 32" class="u-svg-ico">
+                                <path d="M28.8 6.2L16 19 3.2 6.2 0 9.4l16 16.4L32 9.4z"></path>
+                            </svg>
+                        </span>
+                        <div class="c-header__dropdown__menu">
+                            <a href="/enterprise/" class="c-header__link c-header__dropdown__menu__link" title="Guru Enterprise" id="topnav-enterprise"> Enterprise </a>
+                            <a href="/agency/" class="c-header__link c-header__dropdown__menu__link" title="Guru Agency" id="topnav-agency"> Agency </a>
+                            <a href="/purchase-orders/" class="c-header__link c-header__dropdown__menu__link" title="Purchase Orders" id="topnav-PO"> Purchase Orders </a>
+                            <a href="/agreements/" class="c-header__link c-header__dropdown__menu__link" title="Agreements" id="topnav-agreements"> Agreements </a>
+                            <a href="/safepay/" class="c-header__link c-header__dropdown__menu__link" title="SafePay" id="topnav-safepay"> SafePay </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <ul class="c-header__row__account">
+                    <li>
+                        <a id="topnav-post-a-job" class="o-button o-button--small" href="/registeraccount.aspx?ReturnUrl=hire/post/" title="Post a Job">Post a Job</a>
+                    </li>
+                    <li class="c-header__navigationItem">
+                        <a class="c-header__icon c-header__link" href="/registeraccount.aspx" id="topnav-join-now">
+                            <svg role="img" class="c-header__icon__ico u-svg-ico" viewBox="0 0 15 15" height="16" width="16" >
+						       <path d="M13.6 9.6c-.2 0-.3.2-.3.4v3.2c0 .6-.5 1-1.1 1H1.8a1 1 0 0 1-1-1V3.8c0-.6.4-1 1-1h3.3c.2 0 .4-.2.4-.4S5.3 2 5 2H1.8C.8 2 0 2.8 0 3.8v9.4c0 1 .8 1.8 1.8 1.8h10.4c1 0 1.8-.8 1.8-1.8V10c0-.2-.2-.4-.4-.4z"/>
+      <path d="M14 .5c-.6-.7-1.7-.7-2.3 0L5 7.2l-.1.1-.9 3.2a.4.4 0 0 0 .5.5l3.2-.9h.1l6.7-6.8c.7-.6.7-1.7 0-2.4l-.4-.4zm-8.2 7L11.3 2 13 3.7 7.6 9.2 5.8 7.4zm-.3.6l1.4 1.4-2 .6.6-2zM14 2.8l-.4.4-1.8-1.8.4-.4a1 1 0 0 1 1.3 0l.5.5c.3.3.3 1 0 1.3z"/>    
+   
+					        </svg>
+                            <span>Sign Up</span>
+                        </a>
+                    </li>
+                    <li class="c-header__navigationItem">
+                        <a class="c-header__icon c-header__link" href="/login.aspx" id="topnav-sign-in">
+                            <svg role="img" class="c-header__icon__ico  u-svg-ico" viewBox="0 0 17 15" height="15" width="15">
+                             <path fill="currentColor" d="M15.1 0H9C7.9 0 7 .8 7 1.8v1.6c0 .2.2.4.5.4.2 0 .4-.2.4-.4V1.8c0-.5.5-.9 1-1H15c.6 0 1 .5 1 1v11.4c0 .3-.1.5-.3.7a1 1 0 0 1-.7.2H9a1 1 0 0 1-1-.9v-1.5c0-.3-.2-.5-.4-.5-.3 0-.5.2-.5.5v1.5c0 1 .8 1.8 1.9 1.8h6c1 0 1.9-.8 1.9-1.8V1.8c0-1-.8-1.8-1.9-1.8z"/>
+      <path fill="currentColor" d="M11.4 6.8H.4c-.2 0-.4.2-.4.5 0 .2.2.4.5.4h11l-2.4 2.6v.6c.3.2.6.1.7 0l3-3.3.2-.3-.1-.3-3-2.9-.4-.1-.3.1-.2.3c0 .1 0 .2.2.3l2.2 2.1z"/>
+    </svg>
+                            <span>Log In</span>
+                        </a>
+                    </li>
+                </ul>  
+                            
+            </div>
+        </div>
+    </nav>
+    
+    
+    <aside class="c-sideNav" id="sideNav" role="navigation" aria-label="Primary Navigation">
+        
+        <div class="c-sideNav__shadow" id="sideNavShadow"></div>
+        
+        <nav class="c-sideNav__container" id="sideNavContainer">
+            <div class="c-sideNav__content">
+                <a href="/d/freelancers/" id="mobile-find-a-guru">Find Freelancers</a>
+                <a href="/d/jobs/" id="mobile-find-a-job">Find a Job</a>
+                <a href="/how-it-works/" id="mobile-how-it-works">How It Works</a>
+                <a href="/about/" id="mobile-about"> About Guru </a>
+                <a href="/why-guru/" id="mobile-why-guru">Why Guru</a>
+                
+                <a href="/pricing-employer/" id="mobile-pricing"> Pricing </a>
+                <a href="/blog/"id="mobile-blog"> Blog </a>
+
+                <hr>
+                
+                <a href="/enterprise/" id="mobile-enterprise">Enterprise Solutions</a>
+                <a href="/agency/" id="mobile-agency"> Agency Solutions </a>
+                <a href="/purchase-orders/" id="mobile-po" >Purchase Order Solutions</a>
+                <a href="/agreements/" id="mobile-work-agreements">Work Agreements </a>
+                <a href="/safePay/" id="mobile-safepay"> SafePay </a>
+                <hr>
+
+                <a href="/registeraccount.aspx" id="mobile-join-now">Sign Up</a>
+                <a href="/login.aspx" id="mobile-sign-in">Log In</a>
+
+            </div>
+        </nav>
+    </aside>
+    
+</header>
+
+<script src="https://img-guru.com/20260422.1/js/marketing/navigation.min.js" async defer></script>
+
+
+    <main id="main" role="main" class="hp2019">
+        <div class="o-container">
+            <div class="pageNotFound">
+                <div class="pageNotFound__content">
+                    <h1 class="pageNotFound__title">
+                        Not all those who <span class="u-copyGrey">hit 404</span> are lost
+                      
+                    </h1>
+                    <figure class="pageNotFound__figure__mobile">
+                        <img srcset="/images/errorpages/guy2x.png 2x,
+							/images/errorpages/guy.png 1x" src="https://img-guru.com/20260422.1/images/errorpages/guy.png" alt="404 Error" />
+                    </figure>
+                    <p class="pageNotFound__subtitle">Looks like the URL you typed is either incorrect or doesn't exist.</p>
+                    <div class="pageNotFound__cta">
+                        <a href="/" class="o-button">Go To Home</a>
+                        <span class="pageNotFound__cta__or">or</span>
+                        <a href="/contact.aspx" class="o-button o-button--outline">Contact Us</a>
+                    </div>
+                </div>
+                <figure class="pageNotFound__figure">
+                    <img srcset="/images/errorpages/guy2x.png 2x,
+							/images/errorpages/guy.png 1x" src="https://img-guru.com/20260422.1/images/errorpages/guy.png" alt="404 Error" />
+                </figure>
+            </div>
+        </div>
+    </main>
+    
+
+<footer class="c-footer">
+    <div class="o-container">
+        <div class="c-footer__wrap">
+
+            <div class="c-footer__section">
+                <input id="navigate" type="checkbox" class="c-footer__section__toggle">
+                <p role="heading" aria-level="2" class="c-footer__section__heading" aria-controls="navigate-section">
+                    <label for="navigate">Navigate</label>
+                </p>
+                <div class="c-footer__section__items" id="navigate-section">
+                    <a id="footer-home" href="/index.aspx?Ref=login.aspx" title="Home">Home</a>
+                    <a id="footer-postjob-link" href="/registeraccount.aspx?ReturnUrl=hire/post/" title="Post a Job">Post a Job</a>
+                    <a id="footer-searchfreelancers" href="/d/freelancers/" title="Find a Freelancer">Find a Freelancer</a>
+                    <a id="footer-findjobs" href="/d/jobs/" title="Find a Job">Find a Job</a>
+                    <a id="footer-enterprise" href="/enterprise/" title="Enterprise Solutions">Enterprise Solutions</a>
+                    <a id="footer-agency" href="/agency/" title="Agency Solutions">Agency Solutions</a>
+                    <a id="footer-po" href="/purchase-orders/" title="Purchase Order Solutions">PO Solutions</a>
+                </div>
+            </div>
+
+            <div class="c-footer__section">
+                <input id="company-info" type="checkbox" class="c-footer__section__toggle">
+                <p role="heading" aria-level="2" class="c-footer__section__heading" aria-controls="company-info-section">
+                    <label for="company-info">
+                        Company Info</label>
+                </p>
+                <div class="c-footer__section__items" id="company-info-section">
+                    <a id="footer-about" href="/about/" title="About Us">About Guru</a>
+                    <a id="footer-howitworks" href="/how-it-works/" title="How it Works">How Guru Works</a>
+                    <a id="footer-why-guru" href="/why-guru/" title="Why Guru">Why Guru</a>
+                    <a id="footer-work-agreements" href="/agreements/" title="Work Agreements">Work Agreements</a>
+                    <a id="footer-safepay" href="/safepay/" title="SafePay">SafePay</a>
+                    <a id="footer-pricing" href="/pricing-employer/" title="Pricing">Pricing</a>
+                </div>
+            </div>
+
+            <div class="c-footer__section">
+                <input id="resources" type="checkbox" class="c-footer__section__toggle">
+                <p role="heading" aria-level="2" class="c-footer__section__heading" aria-controls="resource-section">
+                    <label for="resources">
+                        Resources</label>
+                </p>
+                <div class="c-footer__section__items" id="resource-section">
+                    <a id="footer-help" target="_blank" rel="noreferrer noopener"  href="/help/" title="Help & FAQ">Help &amp; FAQ</a>
+                    <a id="footer-blog" href="/blog/" title="Blog">Blog</a>
+                    <a id="footer-contactus" href="/contact.aspx" title="Contact Us">Contact Us</a>
+                    <a id="footer-mobileapp" href="/app/" title="Mobile App">Mobile App</a>
+                    <a id="footer-apis" href="/apihelp/help.html" title="APIs">APIs</a>
+                    <a id="footer-sitemap" href="/sitemap/" title="sitemap">Sitemap</a>
+                    <a class="optanon-show-settings">Cookie Settings</a>
+                </div>
+            </div>
+
+            <div class="c-footer__section">
+                <input id="policies" type="checkbox" class="c-footer__section__toggle">
+                <p role="heading" aria-level="2" class="c-footer__section__heading" aria-controls="policy-section">
+                    <label for="policies">
+                        Policies
+                    </label>
+                </p>
+                <div class="c-footer__section__items" id="policy-section">
+                    <a id="footer-ippolicy" href="/trademark-copyright-policy/" title="IP Policy">IP Policy</a>
+                    <a id="footer-privacypolicy" href="/privacy-policy/" title="Privacy Policy">Privacy Policy</a>
+                    <a id="footer-tos" href="/terms-of-service/" title="Terms of Service">Terms of Service</a>
+                </div>
+            </div>
+
+            <div class="c-footer__section c-footer__section--connect flex-2">
+                <p role="heading" aria-level="2" class="c-footer__section__heading">
+                    Connect With Us
+                </p>
+                <div class="c-footer__socials">
+                    <a href="https://www.facebook.com/GuruFreelancing/" title="Connect with Guru on Facebook" class="c-footer__socials__social c-footer__socials__social--facebook" rel="me noreferrer noopener" id="footer-social-media-facebook" target="_blank">
+                        <svg class="u-svg-ico" width="28" height="28" role="img" aria-label="Connect with Guru on Facebook" alt="Facebook" viewBox="0 0 512 512">
+                            <title>Connect with Guru on Facebook</title>
+                            <path d="M211.9 197.4h-36.7v59.9h36.7v175.8h70.5V256.5h49.2l5.2-59.1h-54.4v-33.7c0-13.9 2.8-19.5 16.3-19.5h38.2V82.9h-48.8c-52.5 0-76.1 23.1-76.1 67.3-.1 38.6-.1 47.2-.1 47.2z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://x.com/GuruFreelancing" title="Connect with Guru on X" class="c-footer__socials__social c-footer__socials__social--x" rel="me noreferrer noopener" alt="X" id="footer-social-media-x" target="_blank">
+                        <svg class="u-svg-ico" width="28" height="28" role="img" aria-label="Connect with Guru on X" viewBox="0 0 36 36">
+                            <title>Connect with Guru on X</title>
+                            <path d="M19.7124 16.7893L26.4133 9H24.8255L19.0071 15.7633L14.3599 9H9L16.0274 19.2273L9 27.3955H10.588L16.7324 20.2533L21.6401 27.3955H27L19.7121 16.7893H19.7124ZM17.5375 19.3174L16.8255 18.299L11.1602 10.1954H13.5992L18.1712 16.7353L18.8832 17.7537L24.8262 26.2545H22.3871L17.5375 19.3178V19.3174Z"></path>
+                        </svg>
+                    </a>
+                    <a href="https://www.linkedin.com/company/gurufreelancing/" title="Connect with Guru on LinkedIn" class="c-footer__socials__social c-footer__socials__social--linkedIn" rel="me noreferrer noopener" alt="LinkedIn" id="footer-social-media-linkedin" target="_blank">
+                        <svg class="u-svg-ico" width="28" height="28" role="img" aria-label="Connect with Guru on LinkedIn" viewBox="0 0 512 512">
+                            <title>Connect with Guru on LinkedIn</title>
+                            <path d="M186.4 142.4c0 19-15.3 34.5-34.2 34.5-18.9 0-34.2-15.4-34.2-34.5 0-19 15.3-34.5 34.2-34.5 18.9 0 34.2 15.5 34.2 34.5zm-5 58.9h-57.8v186.8h57.8V201.3zm92.4 0h-55.4v186.8h55.4v-98c0-26.3 12.1-41.9 35.2-41.9 21.3 0 31.5 15 31.5 41.9v98H398V269.8c0-50-28.3-74.2-68-74.2-39.6 0-56.3 30.9-56.3 30.9v-25.2h.1z"></path>
+                        </svg>
+                    </a>
+                </div>
+                <div class="u-margin-top">
+                    <p class="c-footer__section__heading">
+                        Get the Guru App
+                    </p>
+                    <div class="flex flex-center flex-wrap row-gap-half c-footer__socials">
+                        <a id="apple_app_store_download_button" class="c-footer__socials__social" href="https://apps.apple.com/us/developer/websoft-inc/id1551376616" target="_blank" rel="me noreferrer noopener">
+                            <img src="https://res.cloudinary.com/gurucom/image/upload/f_auto/v1721825665/static/homepage/app/icon-apple_ubj02s.png"
+                                alt="Download iOS App" />
+                        </a>
+                        <a id="google_play_store_download_button" class="c-footer__socials__social" href="https://play.google.com/store/apps/dev?id=8502258576761407444&hl=en" target="_blank" rel="me noreferrer noopener">
+                            <img src="https://res.cloudinary.com/gurucom/image/upload/f_auto/v1721825665/static/homepage/app/icon-android_ydespj.png"
+                                alt="Download Android App" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="c-footer__bottom">
+            <p class="c-footer__bottom__logowrap" style="column-gap: .5rem;">
+                <a href="/" title="Guru Home" style="margin-bottom: -10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250.7 56.8" height="24.66" width="110">
+                        <path fill="#ffffff" d="M162.4 9.2v16.1c0 5.5-6.6 10.1-14.5 10.1 -7.9 0-14.5-4.6-14.5-10.1V9.4h-5.9v15.8c0 8.8 9.2 16 20.4 16 11.3 0 20.4-7.2 20.4-16V9.2H162.4z M244.8 9.2v16.1c0 5.5-6.6 10.1-14.5 10.1 -7.9 0-14.5-4.6-14.5-10.1V9.4h-5.9v15.8c0 8.8 9.2 16 20.4 16 11.3 0 20.4-7.2 20.4-16V9.2H244.8z M178.6 41.3h-5.9V9.2h5.9v13c9.2-12 26-13 26.2-13l0.3 5.9C204 15.2 178.6 16.7 178.6 41.3z M118 9.2v4.8c-3.7-2.9-8.8-4.8-14.5-4.8 -11.3 0-20.4 7.2-20.4 16 0 8.8 9.2 16 20.4 16 5.7 0 10.8-1.8 14.5-4.8v4.3c0 5.5-6.6 10.1-14.5 10.1 -6.3 0-11.8-3-13.7-7l-5.7 1.8c2.6 6.5 10.4 11.2 19.4 11.2 11 0 20-6.9 20.4-15.5h0V9.2H118zM103.5 35.3c-7.9 0-14.5-4.6-14.5-10.1 0-5.5 6.6-10.1 14.5-10.1 7.9 0 14.5 4.6 14.5 10.1C118 30.7 111.4 35.3 103.5 35.3z"></path>
+                        <path fill="#ffffff" d="M46.6 33.9c2.8 0.7 5.5 1.6 8.1 2.9 2.6 1.2 4.9 2.7 7.1 4.4 2.2 1.7 4.2 3.6 6.1 5.7 1.9 2.1 3.5 4.3 4.9 6.8H62.3c-1.6-1.9-3.3-3.6-5.2-5.1 -1.9-1.5-4-2.8-6.2-3.9 -2.2-1.1-4.5-1.9-6.9-2.5 -2.4-0.6-4.9-0.9-7.6-0.9 -2.7 0-5.2 0.3-7.7 0.9 -2.5 0.6-4.8 1.4-6.9 2.5 -2.2 1.1-4.2 2.4-6.1 3.9 -1.9 1.5-3.7 3.2-5.2 5.1H0c1.4-2.5 3-4.7 4.9-6.9 1.9-2.1 3.9-4 6.2-5.7 2.3-1.7 4.7-3.1 7.2-4.3 2.6-1.2 5.3-2.2 8.1-2.9 -2.5-0.6-4.8-1.4-6.9-2.4 -2.2-1-4.2-2.2-6.2-3.6 -2-1.4-3.8-2.9-5.5-4.6 -1.7-1.7-3.2-3.6-4.6-5.5 0.7-1.1 1.4-2.1 2.3-3.1 0.8-1 1.7-1.9 2.6-2.8S9.9 10 11 9.2c1-0.8 2-1.6 3-2.3 0.1-0.9 0.3-1.7 0.7-2.4 0.4-0.7 0.9-1.4 1.5-2 0.6-0.6 1.3-1.1 2.1-1.4 0.8-0.3 1.6-0.5 2.5-0.5 1 0 1.9 0.2 2.7 0.6 0.8 0.4 1.6 0.9 2.2 1.5 0.6 0.6 1.2 1.4 1.5 2.2C27.8 5.8 28 6.7 28 7.7c0 1-0.2 1.9-0.6 2.7 -0.4 0.8-0.9 1.6-1.5 2.2 -0.6 0.6-1.4 1.1-2.2 1.5 -0.8 0.3-1.7 0.5-2.7 0.5 -0.2 0-0.4 0-0.7 0 -0.2 0-0.5 0-0.7-0.1 -0.2 0-0.4-0.1-0.7-0.2 -0.2-0.1-0.5-0.2-0.7-0.3 -0.4 0.3-0.8 0.6-1.1 0.9 -0.3 0.3-0.7 0.6-1.1 0.9 -0.4 0.3-0.8 0.6-1.1 0.9 -0.3 0.3-0.7 0.6-1 1 1.5 1.4 3 2.7 4.7 3.8 1.7 1.2 3.5 2.2 5.4 2.9 1.9 0.8 3.9 1.4 6 1.8 2.1 0.4 4.3 0.7 6.4 0.7 2.2 0 4.3-0.2 6.4-0.7 2.1-0.4 4.1-1.1 6-1.8 1.9-0.8 3.7-1.8 5.4-2.9 1.7-1.2 3.2-2.5 4.7-3.8h0.1c0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-1 0.2-1.9 0.5-2.8 0.3-0.9 0.9-1.7 1.5-2.4 0.7-0.7 1.5-1.2 2.4-1.5 0.9-0.3 1.8-0.5 2.8-0.5 1 0 1.9 0.2 2.8 0.5 0.9 0.3 1.6 0.9 2.3 1.5 0.6 0.7 1.2 1.5 1.5 2.4 0.4 0.9 0.6 1.8 0.6 2.8 0 1-0.2 1.9-0.6 2.8 -0.4 0.9-0.9 1.6-1.5 2.3 -0.6 0.6-1.4 1.2-2.3 1.5 -0.9 0.4-1.8 0.6-2.8 0.6 -0.2 0-0.3 0-0.4 0 -0.1 0-0.2 0-0.4 0 -0.1 0-0.3 0-0.4-0.1 -0.1 0-0.2-0.1-0.4-0.1 -1.2 1.2-2.5 2.3-3.9 3.4 -1.4 1.1-2.9 2.1-4.4 2.9 -1.5 0.9-3.1 1.7-4.8 2.4C50.1 33 48.3 33.5 46.6 33.9z"></path>
+                        <path fill="#ffffff" d="M32 8.7c0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3 0-0.1 0-0.2 0-0.3s0-0.2 0-0.3c0-0.6-0.1-1.2-0.1-1.8 -0.1-0.6-0.2-1.3-0.4-1.8 -0.2-0.6-0.5-1.2-0.8-1.7 -0.3-0.5-0.7-1.1-1-1.5 0.5-0.1 1-0.2 1.6-0.2 0.6 0 1.2-0.1 1.8-0.1 0.6 0 1.2-0.1 1.8-0.1C35.4 0 36 0 36.5 0c2.2 0 4.3 0.2 6.4 0.5 2.1 0.3 4.1 0.8 6.1 1.5 2 0.6 3.9 1.4 5.7 2.4 1.8 0.9 3.6 2 5.2 3.2 -0.6 0.4-1.1 0.9-1.6 1.4 -0.5 0.5-0.9 1.1-1.3 1.7 -0.3 0.6-0.7 1.2-1 1.9 -0.3 0.7-0.5 1.4-0.6 2.1 -1.3-1-2.7-1.9-4.2-2.7 -1.5-0.8-3.1-1.4-4.6-2 -1.6-0.5-3.2-0.9-4.9-1.2 -1.7-0.2-3.5-0.4-5.2-0.4 -0.4 0-0.8 0-1.2 0 -0.4 0-0.8 0-1.2 0 -0.4 0-0.8 0-1.1 0.1C32.7 8.5 32.4 8.6 32 8.7z"></path>
+                        <path fill="#ffffff" d="M29.9 18.3c0-1 0.2-1.9 0.6-2.7 0.4-0.8 0.9-1.6 1.5-2.2 0.6-0.6 1.4-1.2 2.2-1.5 0.8-0.4 1.7-0.6 2.7-0.6 1 0 1.9 0.2 2.8 0.6 0.9 0.4 1.6 0.9 2.3 1.5 0.6 0.6 1.1 1.4 1.5 2.2 0.3 0.8 0.5 1.7 0.5 2.7 0 1-0.2 1.9-0.5 2.7 -0.3 0.8-0.8 1.6-1.5 2.2 -0.6 0.6-1.4 1.2-2.3 1.5 -0.9 0.4-1.8 0.6-2.8 0.6 -1 0-1.9-0.2-2.7-0.6 -0.8-0.4-1.6-0.9-2.2-1.5 -0.6-0.6-1.2-1.4-1.5-2.2C30.1 20.2 29.9 19.3 29.9 18.3z"></path>
+                    </svg>
+                </a>
+                <span class="c-footer__bottom__logowrap__tagline">| Get Work Done</span>
+            </p>
+
+
+            <p class="c-footer__bottom__copyright">
+                Copyright &copy;
+                2026, Guru.com
+            </p>
+        </div>
+    </div>
+</footer>
+
+
+
+<script type="text/javascript" src="/_Incapsula_Resource?SWJIYLWA=719d34d31c8e3a6e6fffd425f7e032f3&ns=3&cb=1974341476" async></script></body>
+</html>

@@ -1,0 +1,8 @@
+node_modules
+.env
+
+/src/generated/prisma
+
+# Uploaded media (user-generated) — keep the folder, ignore its contents
+/uploads/*
+!/uploads/.gitkeep

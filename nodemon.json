@@ -1,0 +1,7 @@
+{
+  "exec": "node --env-file=.env src/index.js",
+  "ext": "js",
+  "ignore": ["node_modules", "prisma"],
+  "signal": "SIGKILL",
+  "delay": 1000
+}

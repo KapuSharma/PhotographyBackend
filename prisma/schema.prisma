@@ -1,0 +1,439 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Client {
+  id           String    @id @default(cuid())
+  name         String
+  studioName   String
+  email        String    @unique
+  phone        String?
+  domain       String?   @unique
+  logoUrl      String?
+  accentColor  String?   @default("#000000")
+  template     String    @default("aurora")
+  plan         String    @default("starter")
+  status       String    @default("active")
+  createdAt    DateTime  @default(now())
+
+  leads        Lead[]
+  services     Service[]
+  faqs         FAQ[]
+  aiConfig     AIConfig?
+  users        User[]
+  conversations AIConversation[]
+  payments     Payment[]
+  siteContent  SiteContent?
+  profile      PhotographerProfile?
+  taskColumns  TaskColumn[]
+  tasks        Task[]
+  huntSources  HuntSource[]
+  huntSignals  HuntSignal[]
+  hoiLeads     HoiLead[]
+  meetings     Meeting[]
+  hunterConfig HunterConfig?
+  packages     Package[]
+  testimonials Testimonial[]
+  gallery      GalleryImage[]
+  blogPosts    BlogPost[]
+}
+
+model BlogPost {
+  id       String  @id @default(cuid())
+  clientId String
+  title    String  @default("")
+  excerpt  String?
+  date     String?
+  imageUrl String?
+  active   Boolean @default(true)
+  order    Int     @default(0)
+
+  client   Client  @relation(fields: [clientId], references: [id])
+}
+
+model GalleryImage {
+  id       String  @id @default(cuid())
+  clientId String
+  url      String  @default("")
+  title    String?
+  category String?
+  active   Boolean @default(true)
+  order    Int     @default(0)
+
+  client   Client  @relation(fields: [clientId], references: [id])
+}
+
+model Testimonial {
+  id       String  @id @default(cuid())
+  clientId String
+  client   String  @default("")
+  city     String?
+  rating   Int     @default(5)
+  text     String  @default("")
+  avatar   String?
+  active   Boolean @default(true)
+  order    Int     @default(0)
+
+  tenant   Client  @relation(fields: [clientId], references: [id])
+}
+
+model Package {
+  id        String   @id @default(cuid())
+  clientId  String
+  name      String
+  price     String?
+  duration  String?
+  bestFor   String?
+  includes  String[] @default([])
+  popular   Boolean  @default(false)
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  content   String?
+  images    String[] @default([])
+
+  client    Client   @relation(fields: [clientId], references: [id])
+}
+
+model Lead {
+  id              String    @id @default(cuid())
+  clientId        String
+  ownerId         String?
+  name            String
+  company         String?
+  contact         String?
+  email           String
+  phone           String?
+  eventType       String?
+  eventDate       String?
+  location        String?
+  budget          String?
+  estimatedValue  Float?
+  currency        String?   @default("INR")
+  message         String?
+  status          String    @default("New")
+  source          String    @default("Website Form")
+  score           Int?      @default(0)
+  temperature     String?
+  priority        String?
+  tags            Json?     @default("[]")
+  notes           String?
+  activity         Json?     @default("[]")
+  aiInsights       Json?
+  aiInsightsAt     DateTime?
+  aiInsightsModel  String?
+  aiInsightsError  String?
+  lastActivityAt  DateTime?
+  nextFollowUpAt  DateTime?
+  wonAt           DateTime?
+  lostAt          DateTime?
+  lostReason      String?
+  createdAt        DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  client          Client    @relation(fields: [clientId], references: [id])
+  owner           User?     @relation("LeadOwner", fields: [ownerId], references: [id])
+  conversation    AIConversation?
+  meetings        Meeting[]
+
+  @@index([clientId, status])
+  @@index([clientId, ownerId])
+  @@index([clientId, wonAt])
+}
+
+model AIConversation {
+  id        String   @id @default(cuid())
+  clientId  String
+  leadId    String?  @unique
+  messages  Json     @default("[]")
+  createdAt DateTime @default(now())
+
+  client    Client   @relation(fields: [clientId], references: [id])
+  lead      Lead?    @relation(fields: [leadId], references: [id])
+}
+
+model Service {
+  id            String  @id @default(cuid())
+  clientId      String
+  name          String
+  description   String?
+  price         String?
+  duration      String?
+  startingPrice Float?
+  category      String?
+  content       String?
+  images        String[] @default([])
+  active        Boolean @default(true)
+
+  client        Client  @relation(fields: [clientId], references: [id])
+}
+
+model FAQ {
+  id       String  @id @default(cuid())
+  clientId String
+  question String
+  answer   String
+  active   Boolean @default(true)
+
+  client   Client  @relation(fields: [clientId], references: [id])
+}
+
+model AIConfig {
+  id              String  @id @default(cuid())
+  clientId        String  @unique
+  systemPrompt    String?
+  tone            String  @default("professional")
+  greetingMessage String?
+  bookingCtaText  String  @default("Book a Session")
+  aiAssistantName String  @default("AI Assistant")
+  smsNotifications Boolean @default(true)
+  humanDelay      Boolean @default(false)
+  primaryNiche    String  @default("commercial")
+
+  client          Client  @relation(fields: [clientId], references: [id])
+}
+
+model SiteContent {
+  id        String  @id @default(cuid())
+  clientId  String  @unique
+  hero      Json?
+  brand     Json?
+  trust     Json?
+  cta              Json?
+  about            Json?
+  contact          Json?
+  galleryCategories Json?
+  header           Json?
+  footer           Json?
+  sections         Json?
+
+  client    Client  @relation(fields: [clientId], references: [id])
+}
+
+model User {
+  id           String    @id @default(cuid())
+  clientId     String
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         String    @default("photographer")
+  lastLogin    DateTime?
+  createdAt    DateTime  @default(now())
+
+  client            Client    @relation(fields: [clientId], references: [id])
+  ownedLeads        Lead[]    @relation("LeadOwner")
+  scheduledMeetings Meeting[] @relation("MeetingScheduler")
+}
+
+model PhotographerProfile {
+  id                   String   @id @default(cuid())
+  clientId             String   @unique
+  // Identity
+  fullName             String?
+  studioName           String?
+  location             String?
+  website              String?
+  phone                String?
+  email                String?
+  yearsExperience      String?
+  bio                  String?
+  // Specialisations
+  niches               Json?    @default("[]")
+  shootingStyle        String?
+  editingStyle         String?
+  // Services & pricing
+  minBudget            String?
+  depositPercent       String?  @default("50")
+  paymentTerms         String?
+  avgProjectValue      String?
+  // Availability
+  bookingLeadTime      String?
+  turnaround           String?
+  travelsInterstate    String?  @default("No")
+  travelsInternational String?  @default("No")
+  // Ideal client
+  idealClientDesc      String?
+  pastClients          String?
+  // AI behaviour
+  responseStyle        String?  @default("Professional")
+  dealBreakers         String?
+  qualifyingQuestions  String?
+  closingLine          String?
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  client               Client   @relation(fields: [clientId], references: [id])
+}
+
+model TaskColumn {
+  id         String   @id @default(cuid())
+  clientId   String
+  key        String
+  label      String
+  color      String   @default("#6B7280")
+  position   Int      @default(0)
+  isDefault  Boolean  @default(false)
+  isFinal    Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  client     Client   @relation(fields: [clientId], references: [id])
+
+  @@unique([clientId, key])
+  @@index([clientId, position])
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  clientId    String
+  columnKey   String
+  title       String
+  type        String   @default("Other")
+  priority    String   @default("Medium")
+  dueDate     String?
+  leadId      String?
+  description String?
+  position    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  client      Client   @relation(fields: [clientId], references: [id])
+
+  @@index([clientId, columnKey])
+}
+
+model HuntSource {
+  id        String   @id @default(cuid())
+  clientId  String
+  platform  String
+  niche     String   @default("Other")
+  location  String   @default("")
+  feeds     Json     @default("[]")
+  enabled   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  client    Client   @relation(fields: [clientId], references: [id])
+  signals   HuntSignal[]
+
+  @@index([clientId])
+}
+
+model HuntSignal {
+  id              String   @id @default(cuid())
+  clientId        String
+  sourceId        String
+  platform        String
+  profileName     String   @default("")
+  profileHandle   String   @default("")
+  profileUrl      String   @default("")
+  postUrl         String   @default("")
+  postContent     String
+  city            String   @default("")
+  region          String   @default("")
+  niche           String   @default("Other")
+  confidence      Int      @default(0)
+  matchedKeywords Json     @default("[]")
+  status          String   @default("New")
+  pubDate         DateTime?
+  createdAt       DateTime @default(now())
+
+  client          Client     @relation(fields: [clientId], references: [id])
+  source          HuntSource @relation(fields: [sourceId], references: [id])
+
+  @@index([clientId, status])
+  @@index([clientId, platform])
+}
+
+model HoiLead {
+  id                 String    @id @default(cuid())
+  clientId           String
+  source             String
+  sourceLeadId       String    @default("")
+  sourceUrl          String    @default("")
+  title              String
+  description        String    @default("")
+  budgetMin          Float?
+  budgetMax          Float?
+  currency           String    @default("USD")
+  country            String    @default("")
+  skills             Json      @default("[]")
+  postedAt           DateTime?
+  capturedAt         DateTime  @default(now())
+  clientName         String    @default("")
+  clientHistory      String    @default("")
+  competitionCount   Int       @default(0)
+  rawPayload         Json      @default("{}")
+  status             String    @default("New")
+  assignedTo         String    @default("")
+  score              Int       @default(0)
+  scoreBreakdown     Json      @default("{}")
+  recommendedService String    @default("")
+  scoreReason        String    @default("")
+  suggestedReply     String    @default("")
+  rejected           Boolean   @default(false)
+  rejectReason       String    @default("")
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  client             Client    @relation(fields: [clientId], references: [id])
+
+  @@unique([clientId, source, sourceLeadId])
+  @@index([clientId, status])
+  @@index([clientId, source])
+}
+
+model HunterConfig {
+  id        String   @id @default(cuid())
+  clientId  String   @unique
+  keywords  Json     @default("[]")
+  updatedAt DateTime @updatedAt
+
+  client    Client   @relation(fields: [clientId], references: [id])
+}
+
+model Payment {
+  id          String   @id @default(cuid())
+  clientId    String
+  leadId      String?
+  company     String
+  amount      Float    @default(0)
+  type        String
+  status      String   @default("Draft")
+  paymentDate String?
+  method      String   @default("Awaiting")
+  paymentId   String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  client      Client   @relation(fields: [clientId], references: [id])
+}
+
+model Meeting {
+  id            String    @id @default(cuid())
+  clientId      String
+  leadId        String
+  scheduledById String?
+  title         String    @default("Consultation Call")
+  meetingLink   String
+  startTime     DateTime
+  durationMins  Int       @default(30)
+  notes         String?
+  status        String    @default("Scheduled")
+  emailSentAt   DateTime?
+  emailError    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  client        Client    @relation(fields: [clientId], references: [id])
+  lead          Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  scheduledBy   User?     @relation("MeetingScheduler", fields: [scheduledById], references: [id])
+
+  @@index([clientId, leadId])
+  @@index([leadId, startTime])
+}

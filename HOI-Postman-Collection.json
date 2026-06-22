@@ -1,0 +1,593 @@
+{
+  "info": {
+    "name": "HOI Photographer AI Kit — API",
+    "description": "Complete API collection for the HOI Photographer AI Kit backend.\n\n**Setup:**\n1. Import this collection into Postman\n2. Set the `base_url` variable to `http://localhost:5000/api`\n3. Run **Login** first — copy the returned token into the `token` collection variable\n4. All protected requests will automatically use `{{token}}`",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:5000/api", "type": "string" },
+    { "key": "token",    "value": "PASTE_TOKEN_AFTER_LOGIN",   "type": "string" }
+  ],
+  "item": [
+
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{base_url}}/health", "host": ["{{base_url}}"], "path": ["health"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"tufan.mandal@highoninnovation.com\",\n  \"password\": \"Tufan@123\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Current User (me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/auth/me", "host": ["{{base_url}}"], "path": ["auth", "me"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Clients",
+      "item": [
+        {
+          "name": "Get All Clients",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/clients", "host": ["{{base_url}}"], "path": ["clients"] }
+          }
+        },
+        {
+          "name": "Get Client by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/clients/REPLACE_WITH_CLIENT_ID", "host": ["{{base_url}}"], "path": ["clients", "REPLACE_WITH_CLIENT_ID"] }
+          }
+        },
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Marcus Roux\",\n  \"studioName\": \"ROUX STUDIO\",\n  \"email\": \"marcus@rouxstudio.com\",\n  \"phone\": \"+61400000000\",\n  \"domain\": \"rouxstudio.com\",\n  \"logoUrl\": \"\",\n  \"accentColor\": \"#00e5c8\",\n  \"plan\": \"starter\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/clients", "host": ["{{base_url}}"], "path": ["clients"] }
+          }
+        },
+        {
+          "name": "Update Client",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accentColor\": \"#e8b4a0\",\n  \"status\": \"active\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/clients/REPLACE_WITH_CLIENT_ID", "host": ["{{base_url}}"], "path": ["clients", "REPLACE_WITH_CLIENT_ID"] }
+          }
+        },
+        {
+          "name": "Delete Client",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/clients/REPLACE_WITH_CLIENT_ID", "host": ["{{base_url}}"], "path": ["clients", "REPLACE_WITH_CLIENT_ID"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Leads",
+      "item": [
+        {
+          "name": "Get All Leads",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{base_url}}/leads",
+              "host": ["{{base_url}}"],
+              "path": ["leads"],
+              "query": [
+                { "key": "status", "value": "New",        "disabled": true },
+                { "key": "source", "value": "AI Chatbot", "disabled": true }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Lead by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/leads/REPLACE_WITH_LEAD_ID", "host": ["{{base_url}}"], "path": ["leads", "REPLACE_WITH_LEAD_ID"] }
+          }
+        },
+        {
+          "name": "Create Lead — Brand Campaign",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Lena Park\",\n  \"company\": \"Atlassian APAC\",\n  \"email\": \"lena.park@atlassian.com\",\n  \"phone\": \"+61398765432\",\n  \"eventType\": \"Brand Campaign\",\n  \"eventDate\": \"2026-08-22\",\n  \"location\": \"Melbourne CBD\",\n  \"budget\": \"$9,000-12,000\",\n  \"message\": \"Q3 product launch. Hero and lifestyle shots needed. Urgent timeline.\",\n  \"source\": \"AI Chatbot\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/leads", "host": ["{{base_url}}"], "path": ["leads"] }
+          }
+        },
+        {
+          "name": "Create Lead — Wedding",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sarah Johnson\",\n  \"company\": \"Private Client\",\n  \"email\": \"sarah.johnson@gmail.com\",\n  \"phone\": \"+61412345678\",\n  \"eventType\": \"Wedding\",\n  \"eventDate\": \"2026-11-15\",\n  \"location\": \"The Grounds of Alexandria, Sydney\",\n  \"budget\": \"$4,000-5,000\",\n  \"message\": \"Full day wedding coverage. 120 guests.\",\n  \"source\": \"Website Form\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/leads", "host": ["{{base_url}}"], "path": ["leads"] }
+          }
+        },
+        {
+          "name": "Create Lead — Corporate Headshots",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"David Chen\",\n  \"company\": \"MinterEllison\",\n  \"email\": \"d.chen@minterellison.com\",\n  \"phone\": \"+61396543210\",\n  \"eventType\": \"Corporate Identity\",\n  \"eventDate\": \"2026-07-10\",\n  \"location\": \"MinterEllison Melbourne Office\",\n  \"budget\": \"$2,800-3,200\",\n  \"message\": \"Partner headshots and office photography. Team of 12. Confirmed 9am start.\",\n  \"source\": \"Referral\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/leads", "host": ["{{base_url}}"], "path": ["leads"] }
+          }
+        },
+        {
+          "name": "Create Lead — Content Retainer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sarah Kim\",\n  \"company\": \"Frank Body\",\n  \"email\": \"sarah@frankbody.com\",\n  \"phone\": \"+61422111999\",\n  \"eventType\": \"Content Retainer\",\n  \"eventDate\": \"2026-08-01\",\n  \"location\": \"Sydney Studio\",\n  \"budget\": \"$2,200/mo\",\n  \"message\": \"Ongoing monthly content production. Ready to proceed.\",\n  \"source\": \"Referral\",\n  \"notes\": \"Referral from Thankyou Group. Very warm.\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/leads", "host": ["{{base_url}}"], "path": ["leads"] }
+          }
+        },
+        {
+          "name": "Update Lead — Status Only",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Contacted\",\n  \"notes\": \"Called client. Sending quote by EOD.\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/leads/REPLACE_WITH_LEAD_ID", "host": ["{{base_url}}"], "path": ["leads", "REPLACE_WITH_LEAD_ID"] }
+          }
+        },
+        {
+          "name": "Update Lead — With Activity Entry",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Quoted\",\n  \"activity\": {\n    \"id\": 1712000000000,\n    \"type\": \"quoted\",\n    \"label\": \"Quote Sent\",\n    \"date\": \"2026-04-01T10:00:00.000Z\",\n    \"method\": \"Email\",\n    \"discussion\": \"Discussed brand campaign scope and pricing.\",\n    \"quote\": {\n      \"number\": \"Q-2026-1\",\n      \"total\": 9500,\n      \"items\": [\n        { \"desc\": \"Full Day Shoot\", \"qty\": 1, \"price\": 7000 },\n        { \"desc\": \"Post-Production\", \"qty\": 1, \"price\": 2500 }\n      ],\n      \"validUntil\": \"2026-04-15T00:00:00.000Z\",\n      \"terms\": \"50% deposit on booking, balance on delivery\",\n      \"depositStatus\": \"Pending\"\n    },\n    \"followup\": \"2026-04-04T00:00:00.000Z\"\n  }\n}"
+            },
+            "url": { "raw": "{{base_url}}/leads/REPLACE_WITH_LEAD_ID", "host": ["{{base_url}}"], "path": ["leads", "REPLACE_WITH_LEAD_ID"] }
+          }
+        },
+        {
+          "name": "Update Lead — Mark Booked (auto-creates payment)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Booked\",\n  \"activity\": {\n    \"id\": 1712100000000,\n    \"type\": \"booked\",\n    \"label\": \"Booking Confirmed\",\n    \"date\": \"2026-04-02T09:00:00.000Z\",\n    \"shootDate\": \"2026-08-22\",\n    \"shootTime\": \"09:00\",\n    \"location\": \"Melbourne CBD\",\n    \"duration\": \"Full day\",\n    \"deposit\": \"$4,750 deposit received\",\n    \"depositStatus\": \"Received\"\n  }\n}"
+            },
+            "url": { "raw": "{{base_url}}/leads/REPLACE_WITH_LEAD_ID", "host": ["{{base_url}}"], "path": ["leads", "REPLACE_WITH_LEAD_ID"] }
+          }
+        },
+        {
+          "name": "Delete Lead",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/leads/REPLACE_WITH_LEAD_ID", "host": ["{{base_url}}"], "path": ["leads", "REPLACE_WITH_LEAD_ID"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Get All Payments",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/payments", "host": ["{{base_url}}"], "path": ["payments"] }
+          }
+        },
+        {
+          "name": "Get Payment by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/payments/REPLACE_WITH_PAYMENT_ID", "host": ["{{base_url}}"], "path": ["payments", "REPLACE_WITH_PAYMENT_ID"] }
+          }
+        },
+        {
+          "name": "Create Payment — Deposit",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company\": \"Atlassian APAC\",\n  \"amount\": 4750,\n  \"type\": \"Deposit 50%\",\n  \"status\": \"Pending\",\n  \"paymentDate\": \"2026-04-15\",\n  \"method\": \"Bank Transfer\",\n  \"leadId\": \"REPLACE_WITH_LEAD_ID\",\n  \"paymentId\": \"INV-001\",\n  \"notes\": \"50% deposit for Q3 brand campaign\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/payments", "host": ["{{base_url}}"], "path": ["payments"] }
+          }
+        },
+        {
+          "name": "Create Payment — Retainer",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company\": \"Frank Body\",\n  \"amount\": 2200,\n  \"type\": \"Retainer\",\n  \"status\": \"Pending\",\n  \"paymentDate\": \"2026-08-01\",\n  \"method\": \"Stripe\",\n  \"notes\": \"Monthly content retainer — August 2026\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/payments", "host": ["{{base_url}}"], "path": ["payments"] }
+          }
+        },
+        {
+          "name": "Update Payment",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Paid\",\n  \"paymentDate\": \"2026-04-10\",\n  \"method\": \"Bank Transfer\",\n  \"paymentId\": \"TXN-8821\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/payments/REPLACE_WITH_PAYMENT_ID", "host": ["{{base_url}}"], "path": ["payments", "REPLACE_WITH_PAYMENT_ID"] }
+          }
+        },
+        {
+          "name": "Delete Payment",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/payments/REPLACE_WITH_PAYMENT_ID", "host": ["{{base_url}}"], "path": ["payments", "REPLACE_WITH_PAYMENT_ID"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/users", "host": ["{{base_url}}"], "path": ["users"] }
+          }
+        },
+        {
+          "name": "Get User by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/users/REPLACE_WITH_USER_ID", "host": ["{{base_url}}"], "path": ["users", "REPLACE_WITH_USER_ID"] }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sophie Laurent\",\n  \"email\": \"sophie@lumierephoto.com\",\n  \"passwordHash\": \"$2b$10$REPLACE_WITH_BCRYPT_HASH\",\n  \"role\": \"photographer\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/users", "host": ["{{base_url}}"], "path": ["users"] }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sophie Laurent Updated\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/users/REPLACE_WITH_USER_ID", "host": ["{{base_url}}"], "path": ["users", "REPLACE_WITH_USER_ID"] }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/users/REPLACE_WITH_USER_ID", "host": ["{{base_url}}"], "path": ["users", "REPLACE_WITH_USER_ID"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Get All Services",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/services", "host": ["{{base_url}}"], "path": ["services"] }
+          }
+        },
+        {
+          "name": "Get Service by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/services/REPLACE_WITH_SERVICE_ID", "host": ["{{base_url}}"], "path": ["services", "REPLACE_WITH_SERVICE_ID"] }
+          }
+        },
+        {
+          "name": "Create Service",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Brand Campaign\",\n  \"description\": \"Full day shoot with hero, lifestyle and team content. Includes post-production and commercial licence.\",\n  \"startingPrice\": 8400,\n  \"category\": \"Commercial\",\n  \"active\": true\n}"
+            },
+            "url": { "raw": "{{base_url}}/services", "host": ["{{base_url}}"], "path": ["services"] }
+          }
+        },
+        {
+          "name": "Update Service",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"startingPrice\": 9200,\n  \"active\": true\n}"
+            },
+            "url": { "raw": "{{base_url}}/services/REPLACE_WITH_SERVICE_ID", "host": ["{{base_url}}"], "path": ["services", "REPLACE_WITH_SERVICE_ID"] }
+          }
+        },
+        {
+          "name": "Delete Service",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/services/REPLACE_WITH_SERVICE_ID", "host": ["{{base_url}}"], "path": ["services", "REPLACE_WITH_SERVICE_ID"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "FAQs",
+      "item": [
+        {
+          "name": "Get All FAQs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/faqs", "host": ["{{base_url}}"], "path": ["faqs"] }
+          }
+        },
+        {
+          "name": "Get FAQ by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/faqs/REPLACE_WITH_FAQ_ID", "host": ["{{base_url}}"], "path": ["faqs", "REPLACE_WITH_FAQ_ID"] }
+          }
+        },
+        {
+          "name": "Create FAQ",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"Do you shoot destination weddings?\",\n  \"answer\": \"Yes, we travel worldwide. Travel and accommodation fees apply for destinations outside Sydney.\",\n  \"active\": true\n}"
+            },
+            "url": { "raw": "{{base_url}}/faqs", "host": ["{{base_url}}"], "path": ["faqs"] }
+          }
+        },
+        {
+          "name": "Update FAQ",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"answer\": \"Updated answer text here.\",\n  \"active\": true\n}"
+            },
+            "url": { "raw": "{{base_url}}/faqs/REPLACE_WITH_FAQ_ID", "host": ["{{base_url}}"], "path": ["faqs", "REPLACE_WITH_FAQ_ID"] }
+          }
+        },
+        {
+          "name": "Delete FAQ",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/faqs/REPLACE_WITH_FAQ_ID", "host": ["{{base_url}}"], "path": ["faqs", "REPLACE_WITH_FAQ_ID"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "AI Config",
+      "item": [
+        {
+          "name": "Get AI Config",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/ai-config", "host": ["{{base_url}}"], "path": ["ai-config"] }
+          }
+        },
+        {
+          "name": "Save AI Config (upsert)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"aiAssistantName\": \"Aria\",\n  \"tone\": \"friendly\",\n  \"greetingMessage\": \"Hi! I'm Aria, the ROUX STUDIO assistant. How can I help?\",\n  \"bookingCtaText\": \"Request a Quote\",\n  \"primaryNiche\": \"commercial\",\n  \"smsNotifications\": true,\n  \"humanDelay\": false,\n  \"systemPrompt\": \"You are Aria, a helpful assistant for ROUX STUDIO...\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/ai-config", "host": ["{{base_url}}"], "path": ["ai-config"] }
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "Conversations",
+      "item": [
+        {
+          "name": "Get All Conversations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/conversations", "host": ["{{base_url}}"], "path": ["conversations"] }
+          }
+        },
+        {
+          "name": "Get Conversation by ID",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{base_url}}/conversations/REPLACE_WITH_CONVERSATION_ID", "host": ["{{base_url}}"], "path": ["conversations", "REPLACE_WITH_CONVERSATION_ID"] }
+          }
+        },
+        {
+          "name": "Create Conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"leadId\": \"REPLACE_WITH_LEAD_ID\",\n  \"messages\": [\n    { \"role\": \"user\", \"content\": \"Hi, I'm looking for a brand photographer for our Q3 launch.\" },\n    { \"role\": \"assistant\", \"content\": \"Hi! I'm Aria from ROUX STUDIO. I'd love to help. Can you tell me more about the project?\" }\n  ]\n}"
+            },
+            "url": { "raw": "{{base_url}}/conversations", "host": ["{{base_url}}"], "path": ["conversations"] }
+          }
+        },
+        {
+          "name": "Update Conversation Messages",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type",  "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messages\": [\n    { \"role\": \"user\",      \"content\": \"Hi, looking for a photographer.\" },\n    { \"role\": \"assistant\", \"content\": \"Hi! I'd love to help. What's the occasion?\" },\n    { \"role\": \"user\",      \"content\": \"It's a product launch in August.\" },\n    { \"role\": \"assistant\", \"content\": \"Exciting! What's your approximate budget?\" }\n  ]\n}"
+            },
+            "url": { "raw": "{{base_url}}/conversations/REPLACE_WITH_CONVERSATION_ID", "host": ["{{base_url}}"], "path": ["conversations", "REPLACE_WITH_CONVERSATION_ID"] }
+          }
+        }
+      ]
+    }
+
+  ]
+}
