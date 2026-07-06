@@ -23,7 +23,7 @@ router.put("/", async (req, res) => {
     if (!section || !data) {
       return res.status(400).json({ message: "section and data are required" });
     }
-    const allowed = ["hero", "brand", "trust", "cta", "about", "contact", "galleryCategories", "header", "footer", "sections"];
+    const allowed = ["hero", "brand", "trust", "cta", "about", "contact", "galleryCategories", "header", "footer", "sections", "galleryPage", "servicesPage", "reviewsPage", "blogPage", "blogPostPage", "packagesPage", "commonSections"];
     if (!allowed.includes(section)) {
       return res.status(400).json({ message: `section must be one of: ${allowed.join(", ")}` });
     }

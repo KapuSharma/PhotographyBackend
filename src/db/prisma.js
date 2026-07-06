@@ -7,6 +7,12 @@ const { Pool } = pg;
 
 let _prisma = null;
 let _pool = null;
+// Timestamp of the last successful probe. While the DB is known-warm we skip
+// the SELECT 1 so the per-request guard adds ~no latency. Neon stays awake a
+// few minutes after activity, so a short TTL is safe.
+let _lastOkAt = 0;
+let _warming = null; // de-dupes concurrent cold-start probes into one wake-up
+const WARM_TTL_MS = 20000;
 
 export default function getPrisma() {
   if (!_prisma) {
@@ -41,25 +47,40 @@ export default function getPrisma() {
   return _prisma;
 }
 
-// Called on routes that hit Neon after a cold start — wakes the DB
+// Called on routes that hit Neon after a cold start — wakes the DB.
+// Retries the probe query on the shared pool with backoff. The pg Pool
+// self-heals (broken connections are evicted via the "error" handler),
+// so we must NOT end/recreate the pool here: doing so tears down the
+// connections that other concurrent callers are actively using, which
+// caused the "Cannot use a pool after calling end on the pool" cascade.
 export async function ensureConnected() {
-  const prisma = getPrisma();
-  let attempts = 0;
-  while (attempts < 3) {
-    try {
-      await prisma.$queryRaw`SELECT 1`;
-      return;
-    } catch (err) {
-      attempts++;
-      console.warn(`[db] connection attempt ${attempts} failed:`, err.message);
-      // Reset the pool so next attempt gets a fresh connection
-      if (_pool) {
-        try { await _pool.end(); } catch {}
-        _pool = null;
-        _prisma = null;
+  // Fast path: recently confirmed warm — skip the probe entirely.
+  if (Date.now() - _lastOkAt < WARM_TTL_MS) return;
+  // Collapse concurrent callers (e.g. the dashboard firing several requests at
+  // boot) onto a single wake-up probe instead of each hammering a cold Neon.
+  if (_warming) return _warming;
+
+  _warming = (async () => {
+    let lastErr;
+    for (let attempt = 1; attempt <= 5; attempt++) {
+      try {
+        const prisma = getPrisma();
+        await prisma.$queryRaw`SELECT 1`;
+        _lastOkAt = Date.now();
+        return;
+      } catch (err) {
+        lastErr = err;
+        const detail = err?.message?.trim() || err?.code || String(err);
+        console.warn(`[db] connection attempt ${attempt} failed:`, detail);
+        if (attempt < 5) await new Promise((r) => setTimeout(r, 1500 * attempt));
       }
-      if (attempts < 3) await new Promise(r => setTimeout(r, 1500 * attempts));
     }
+    throw new Error(`Database unavailable after 5 attempts: ${lastErr?.message?.trim() || lastErr?.code || lastErr}`);
+  })();
+
+  try {
+    await _warming;
+  } finally {
+    _warming = null;
   }
-  throw new Error("Database unavailable after 3 attempts");
 }

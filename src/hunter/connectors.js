@@ -132,18 +132,18 @@ export async function fetchFreelancer(customKeywords) {
       const projects = data?.result?.projects || [];
       const qLower = q.toLowerCase();
       for (const p of projects) {
-        const titleDesc = `${p.title || ""} ${p.preview_description || p.description || ""}`.toLowerCase();
+        const titleDesc = `${p.title || ""} ${p.description || p.preview_description || ""}`.toLowerCase();
         if (!titleDesc.includes(qLower) && !qLower.split(" ").some(w => w.length > 3 && titleDesc.includes(w))) continue;
         all.push({
           source: "Freelancer",
           sourceLeadId: String(p.id),
           sourceUrl: p.seo_url ? `https://www.freelancer.com/projects/${p.seo_url}` : `https://www.freelancer.com/projects/${p.id}`,
           title: p.title || "Untitled project",
-          description: p.preview_description || p.description || "",
+          description: p.description || p.preview_description || "",
           budgetMin: p.budget?.minimum ?? null,
           budgetMax: p.budget?.maximum ?? null,
           currency: p.currency?.code || "USD",
-          country: p.location?.country?.name || extractCountry(`${p.title || ""} ${p.preview_description || p.description || ""}`),
+          country: p.location?.country?.name || extractCountry(`${p.title || ""} ${p.description || p.preview_description || ""}`),
           skills: Array.isArray(p.jobs) ? p.jobs.map(j => j.name).filter(Boolean).slice(0, 10) : [],
           postedAt: p.submitdate ? new Date(p.submitdate * 1000) : null,
           clientName: "",
@@ -293,6 +293,13 @@ export async function fetchGuru(customKeywords) {
 
   try {
     const indexXml = await fetchText(indexUrl);
+    // Guru sits behind the Imperva/Incapsula WAF. Bot requests get HTTP 200
+    // with a JS challenge page (not XML), so detect that and report it
+    // instead of silently returning 0 leads with no error.
+    if (/_Incapsula_Resource|incident_id|Request unsuccessful/i.test(indexXml) ||
+        (/^\s*<html/i.test(indexXml) && !/<sitemapindex|<urlset/i.test(indexXml))) {
+      return { items: [], errors: [{ sitemap: indexUrl, error: "Guru is behind the Imperva/Incapsula WAF — it returned a bot-challenge page instead of the jobs sitemap. Free automated access to Guru is not possible. Use the Google Search source (it indexes guru.com) or the Manual entry form." }], fallback: false };
+    }
     const childSitemaps = sitemapChildren(indexXml);
     const targets = childSitemaps.length ? childSitemaps : [indexUrl];
     for (const sm of targets) {
@@ -328,7 +335,7 @@ export async function fetchGuru(customKeywords) {
       const title = fixMojibake(node.title || "");
       const description = fixMojibake(node.description || "");
       const blob = `${title} ${description} ${fixMojibake(node.skills || "")}`.toLowerCase();
-      if (!keywords.some(k => blob.includes(k))) return null;
+      if (!keywords.some(k => blob.includes(k) || k.split(" ").filter(w => w.length > 3).some(w => blob.includes(w)))) return null;
       const { min, max, currency } = guruBudget(node);
       const idMatch = /\/(\d+)(?:\/)?$/.exec(loc);
       return {
@@ -384,8 +391,10 @@ export async function fetchPeoplePerHour(customKeywords) {
       const title = (it.title || "").trim();
       const text = stripHtml(it.contentSnippet || it.content || it.description || "");
       const blob = `${title} ${text}`.toLowerCase();
-      // keep only items matching at least one keyword
-      if (!keywords.some(k => blob.includes(k))) continue;
+      // keep items matching a full keyword phrase OR any significant word of
+      // it (same matching the Freelancer connector / filters.js use — the
+      // PPH feed is general-category so exact-phrase match rejects everything)
+      if (!keywords.some(k => blob.includes(k) || k.split(" ").filter(w => w.length > 3).some(w => blob.includes(w)))) continue;
       all.push({
         source: "PeoplePerHour",
         sourceLeadId: it.guid?.trim() || it.link?.trim() || title,

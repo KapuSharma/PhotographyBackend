@@ -18,7 +18,33 @@ model Client {
   template     String    @default("aurora")
   plan         String    @default("starter")
   status       String    @default("active")
+  // Subscription (feature gating). subscriptionStatus: "active" | "expired".
+  // A subscription counts as active only when status is "active" AND the
+  // expiry is unset or in the future. Uploads (and other gated features) are
+  // unlimited while active and blocked once expired.
+  // Subscription current-state (denormalised for fast gating). subscriptionStatus:
+  // "trial" | "active" | "expired". Plan slug lives in `plan`. History is in
+  // SubscriptionEvent. subscriptionExpiresAt = current period end.
+  subscriptionStatus    String    @default("active")
+  subscriptionExpiresAt DateTime?
+  billingCycle          String    @default("monthly") // monthly | annual
+  trialEndsAt           DateTime?
+  // Metered usage against the plan's credit allowances (AI assistant & Lead Hunt).
+  aiCreditsUsed         Int       @default(0)
+  leadCreditsUsed       Int       @default(0)
+  // Website provisioning & domain state (Phase 3). siteStatus toggles the public
+  // site independently of the account. Custom-domain + SSL move through a state
+  // machine so provisioning is never a silent half-done state.
+  siteStatus       String    @default("live")   // live | offline
+  customDomain     String?   @unique
+  domainStatus     String    @default("none")   // none | pending | verified | failed
+  domainToken      String?
+  sslStatus        String    @default("none")   // none | pending | issued | failed
+  provisionStatus  String    @default("ready")  // ready | pending | failed
   createdAt    DateTime  @default(now())
+  // Soft-delete / archive. Non-null = archived; recoverable within the retention
+  // window before permanent deletion. Excluded from normal listings.
+  deletedAt    DateTime?
 
   leads        Lead[]
   services     Service[]
@@ -209,6 +235,16 @@ model SiteContent {
   header           Json?
   footer           Json?
   sections         Json?
+  // Per-page content blocks for the "aria" template pages (added when the CMS
+  // gained full per-page editing). Each is an arbitrary JSON blob upserted via
+  // PUT /site-content and returned by /public/site.
+  galleryPage      Json?
+  servicesPage     Json?
+  reviewsPage      Json?
+  blogPage         Json?
+  blogPostPage     Json?
+  packagesPage     Json?
+  commonSections   Json?
 
   client    Client  @relation(fields: [clientId], references: [id])
 }
@@ -221,6 +257,10 @@ model User {
   passwordHash String
   role         String    @default("photographer")
   lastLogin    DateTime?
+  // Admin-triggered password reset (secure link). Stores only a hash of the
+  // one-time token; the admin never sees or sets the plaintext password.
+  resetTokenHash   String?
+  resetTokenExpiry DateTime?
   createdAt    DateTime  @default(now())
 
   client            Client    @relation(fields: [clientId], references: [id])
@@ -352,6 +392,7 @@ model HuntSignal {
 model HoiLead {
   id                 String    @id @default(cuid())
   clientId           String
+  runId              String?
   source             String
   sourceLeadId       String    @default("")
   sourceUrl          String    @default("")
@@ -381,19 +422,46 @@ model HoiLead {
   updatedAt          DateTime  @updatedAt
 
   client             Client    @relation(fields: [clientId], references: [id])
+  run                HunterRun? @relation(fields: [runId], references: [id])
 
   @@unique([clientId, source, sourceLeadId])
   @@index([clientId, status])
   @@index([clientId, source])
+  @@index([clientId, runId])
+}
+
+model HunterRun {
+  id            String    @id @default(cuid())
+  clientId      String
+  sources       Json      @default("[]")
+  status        String    @default("running")
+  startedAt     DateTime  @default(now())
+  finishedAt    DateTime?
+  totalCaptured Int       @default(0)
+  totalRejected Int       @default(0)
+  perSource     Json      @default("{}")
+
+  leads         HoiLead[]
+
+  @@index([clientId, startedAt])
+}
+
+// Singleton store for the HOI marketing website's editable content (edited from
+// the super-admin "Website CMS"). One row, id = "hoi-main".
+model MainSiteContent {
+  id        String   @id @default("hoi-main")
+  data      Json     @default("{}")
+  updatedAt DateTime @updatedAt
 }
 
 model HunterConfig {
-  id        String   @id @default(cuid())
-  clientId  String   @unique
-  keywords  Json     @default("[]")
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  clientId    String   @unique
+  keywords    Json     @default("[]")
+  scorePrompt String?
+  updatedAt   DateTime @updatedAt
 
-  client    Client   @relation(fields: [clientId], references: [id])
+  client      Client   @relation(fields: [clientId], references: [id])
 }
 
 model Payment {
@@ -436,4 +504,236 @@ model Meeting {
 
   @@index([clientId, leadId])
   @@index([leadId, startTime])
+}
+
+// Platform staff who operate the Super Admin panel. Separate from tenant Users
+// (photographers). role drives RBAC (see src/lib/permissions.js).
+model AdminUser {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         String    @default("operations") // super_admin | operations | support | content_editor | finance | auditor
+  active       Boolean   @default(true)
+  mfaEnabled   Boolean   @default(false)
+  mfaSecret    String?
+  lastLogin    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+// Support tickets worked from the super-admin Support center.
+model Ticket {
+  id             String    @id @default(cuid())
+  clientId       String? // optional tenant context
+  subject        String
+  category       String    @default("general") // general | billing | technical | onboarding
+  priority       String    @default("normal")  // low | normal | high | urgent
+  status         String    @default("open")     // open | pending | resolved | closed
+  requesterName  String    @default("")
+  requesterEmail String    @default("")
+  assignedTo     String    @default("") // admin email
+  dueAt          DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  messages       TicketMessage[]
+
+  @@index([status, priority])
+  @@index([clientId])
+}
+
+model TicketMessage {
+  id         String   @id @default(cuid())
+  ticketId   String
+  authorType String   @default("admin") // admin | customer
+  authorName String   @default("")
+  body       String
+  internal   Boolean  @default(false) // internal notes are never shown to the tenant
+  createdAt  DateTime @default(now())
+
+  ticket     Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+}
+
+// In-app notifications for admins (lifecycle events, new tickets, announcements).
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   @default("info") // info | warning | success
+  title     String
+  body      String   @default("")
+  link      String   @default("")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([read, createdAt])
+}
+
+// Singleton platform settings (maintenance mode, feature flags, config).
+model PlatformSetting {
+  id        String   @id @default("platform")
+  data      Json     @default("{}")
+  updatedAt DateTime @updatedAt
+}
+
+// Custom (DB-backed) admin roles. The 6 system roles remain code-defined and
+// always present; rows here are additional least-privilege roles a super admin
+// composes from the permission catalog. `key` is the machine name stored on
+// AdminUser.role.
+model AdminRole {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  label       String
+  permissions String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Consent-gated marketing analytics events (funnel instrumentation, NFR-10).
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  name      String
+  props     Json     @default("{}")
+  utm       Json     @default("{}")
+  path      String   @default("")
+  ref       String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([name, createdAt])
+}
+
+// HOI's own marketing blog / resources (authored in the super-admin CMS).
+model MarketingPost {
+  id             String    @id @default(cuid())
+  title          String    @default("")
+  slug           String    @unique
+  excerpt        String    @default("")
+  body           String    @default("")
+  category       String    @default("")
+  tags           String[]  @default([])
+  author         String    @default("")
+  coverImage     String    @default("")
+  status         String    @default("draft") // draft | scheduled | published
+  publishAt      DateTime?
+  seoTitle       String    @default("")
+  seoDescription String    @default("")
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status, publishAt])
+  @@index([category])
+}
+
+// HOI's own marketing-site leads (contact / demo / newsletter / trial) — distinct
+// from tenant CRM Leads. Fed by the public marketing forms; worked from the
+// super-admin Inquiries inbox.
+model MarketingLead {
+  id            String   @id @default(cuid())
+  type          String   // contact | demo | newsletter | trial
+  name          String   @default("")
+  email         String   @default("")
+  phone         String   @default("")
+  company       String   @default("")
+  message       String   @default("")
+  plan          String   @default("")
+  topic         String   @default("")   // sales | support | general (contact)
+  preferredSlot String   @default("")   // demo
+  source        String   @default("")
+  utm           Json     @default("{}")
+  consent       Boolean  @default(false)
+  status        String   @default("New") // New | Contacted | Closed
+  createdAt     DateTime @default(now())
+
+  @@index([type, createdAt])
+  @@index([status])
+}
+
+// Idempotency ledger for public trial provisioning — a repeated request with
+// the same key returns the original result instead of creating a duplicate.
+model TrialRequest {
+  id             String   @id @default(cuid())
+  idempotencyKey String   @unique
+  email          String   @default("")
+  clientId       String?
+  status         String   @default("created") // created | duplicate | failed
+  createdAt      DateTime @default(now())
+}
+
+// Platform subscription plan (the HOI Pricing tiers) — the single source of
+// truth for plan limits + prices, consumed by the admin AND the public Pricing
+// page. Distinct from the per-photographer `Package` (their client-facing offers).
+model Plan {
+  id           String   @id @default(cuid())
+  name         String
+  slug         String   @unique
+  audience     String   @default("")
+  blurb        String   @default("")
+  monthlyPrice Float    @default(0)
+  annualPrice  Float    @default(0)
+  currency     String   @default("USD")
+  features     String[] @default([])
+  storageGb    Int      @default(15)
+  aiCredits    Int      @default(0)
+  leadCredits  Int      @default(0)
+  seats        Int      @default(1)
+  websites     Int      @default(1)
+  badge        String   @default("")
+  highlighted  Boolean  @default(false)
+  order        Int      @default(0)
+  active       Boolean  @default(true)
+  archived     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// Immutable subscription-change history per tenant.
+model SubscriptionEvent {
+  id         String   @id @default(cuid())
+  clientId   String
+  type       String   // trial_started | created | renewed | upgraded | downgraded | expired | suspended | cancelled
+  fromPlan   String   @default("")
+  toPlan     String   @default("")
+  cycle      String   @default("")
+  actorEmail String   @default("")
+  meta       Json     @default("{}")
+  createdAt  DateTime @default(now())
+
+  @@index([clientId, createdAt])
+}
+
+// A time-boxed "log in as tenant" session. Kept server-side so impersonation is
+// revocable (a valid token is rejected once the session is ended or expires).
+model ImpersonationSession {
+  id         String    @id @default(cuid())
+  adminId    String
+  adminEmail String    @default("")
+  clientId   String
+  userId     String
+  reason     String    @default("")
+  startedAt  DateTime  @default(now())
+  expiresAt  DateTime
+  endedAt    DateTime?
+  active     Boolean   @default(true)
+
+  @@index([active])
+  @@index([clientId])
+}
+
+// Append-only record of every super-admin action and security event.
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actorEmail String   @default("")
+  actorRole  String   @default("")
+  action     String   // e.g. "auth.login", "subscription.update"
+  target     String   @default("") // entity type, e.g. "studio"
+  targetId   String   @default("")
+  meta       Json     @default("{}")
+  ip         String   @default("")
+  hash       String   @default("") // per-record integrity digest
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([action])
+  @@index([actorId])
 }

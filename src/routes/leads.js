@@ -284,7 +284,10 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   try {
-    const { activity, activityReplace, ...rest } = req.body;
+    // Tenant isolation: only the owning studio may modify this lead.
+    const owns = await getPrisma().lead.findFirst({ where: { id: req.params.id, clientId: req.user.clientId }, select: { id: true } });
+    if (!owns) return res.status(404).json({ message: "Lead not found" });
+    const { activity, activityReplace, clientId, id, ...rest } = req.body;
     const updateData = { ...rest, lastActivityAt: new Date() };
 
     if (Array.isArray(activityReplace)) {
@@ -357,7 +360,8 @@ router.patch("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  await getPrisma().lead.delete({ where: { id: req.params.id } });
+  const r = await getPrisma().lead.deleteMany({ where: { id: req.params.id, clientId: req.user.clientId } });
+  if (r.count === 0) return res.status(404).json({ message: "Lead not found" });
   res.json({ message: "Lead deleted" });
 });
 

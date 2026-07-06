@@ -71,19 +71,16 @@ function buildBaselineReply(lead, service) {
   return `Hi${lead.clientName ? ` ${lead.clientName.split(" ")[0]}` : ""},\n\nI came across your post about "${t}" and I'd love to help. I specialise in ${service} and have delivered similar work for clients across various industries.\n\nA few quick questions:\n  1. What is your timeline or deadline?\n  2. What is your approximate budget?\n  3. Do you have any references or examples of what you're looking for?\n\nHappy to discuss further and share relevant examples of my work.\n\nBest regards`;
 }
 
-export async function scoreLead(lead, customKeywords) {
-  const baseline = heuristicScore(lead, customKeywords);
-  const groq = getGroq();
-  if (!groq) return baseline;
-
-  const keywordList = customKeywords?.length ? customKeywords.join(", ") : "general services";
-
-  const sys = `You are a lead analyst. Score inbound job/project leads on a 100-point scale for a business that offers: ${keywordList}.
+// The default Groq system prompt. `{{keywords}}` is substituted with the
+// account's hunt keywords at scoring time. Exposed via the API so the UI
+// can show it and let the user override it (stored in HunterConfig).
+export function defaultScorePrompt() {
+  return `You are a lead analyst. Score inbound job/project leads on a 100-point scale for a business that offers: {{keywords}}.
 
 Scoring weights:
 - Buyer intent: 30 (are they clearly looking to hire?)
 - Budget/value: 25 (is the budget reasonable?)
-- Service fit: 20 (does it match the business keywords: ${keywordList}?)
+- Service fit: 20 (does it match the business keywords: {{keywords}}?)
 - Urgency: 15 (how soon do they need it?)
 - Competition risk: 10 (fewer bidders = better)
 
@@ -98,6 +95,19 @@ Return STRICT JSON:
   "reason": "<≤220 chars — why this score>",
   "suggestedReply": "<150-220 word professional outreach reply tailored to this lead>"
 }`;
+}
+
+export async function scoreLead(lead, customKeywords, scorePromptTemplate) {
+  const baseline = heuristicScore(lead, customKeywords);
+  const groq = getGroq();
+  if (!groq) return baseline;
+
+  const keywordList = customKeywords?.length ? customKeywords.join(", ") : "general services";
+
+  const template = (typeof scorePromptTemplate === "string" && scorePromptTemplate.trim())
+    ? scorePromptTemplate
+    : defaultScorePrompt();
+  const sys = template.split("{{keywords}}").join(keywordList);
 
   const usr = `LEAD
 Source: ${lead.source}

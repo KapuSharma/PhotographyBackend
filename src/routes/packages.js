@@ -1,5 +1,6 @@
 import { Router } from "express";
 import getPrisma from "../db/prisma.js";
+import { updateOwned, deleteOwned } from "../lib/scoped.js";
 
 const router = Router();
 
@@ -32,14 +33,17 @@ router.patch("/:id", async (req, res) => {
   try {
     // clientId is not editable from the body
     const { clientId, id, ...data } = req.body;
-    res.json(await getPrisma().package.update({ where: { id: req.params.id }, data }));
+    const updated = await updateOwned(getPrisma().package, req.params.id, req.user.clientId, data);
+    if (!updated) return res.status(404).json({ message: "Package not found" });
+    res.json(updated);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
 router.delete("/:id", async (req, res) => {
-  await getPrisma().package.delete({ where: { id: req.params.id } });
+  const ok = await deleteOwned(getPrisma().package, req.params.id, req.user.clientId);
+  if (!ok) return res.status(404).json({ message: "Package not found" });
   res.json({ message: "Package deleted" });
 });
 

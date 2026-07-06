@@ -1,7 +1,24 @@
 import { Router } from "express";
 import getPrisma, { ensureConnected } from "../db/prisma.js";
+import { subscriptionSummary } from "../lib/subscription.js";
 
 const router = Router();
+
+// GET /clients/subscription — the signed-in client's subscription state, used by
+// the dashboard to show status and gate premium features in the UI.
+router.get("/subscription", async (req, res) => {
+  try {
+    await ensureConnected();
+    const c = await getPrisma().client.findUnique({
+      where: { id: req.user.clientId },
+      select: { subscriptionStatus: true, subscriptionExpiresAt: true, plan: true },
+    });
+    if (!c) return res.status(404).json({ message: "Client not found" });
+    res.json(subscriptionSummary(c));
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 // Allowed public-site templates (keep in sync with the website's registry).
 const TEMPLATES = ["aurora", "noir", "heritage", "alpenglow"];
@@ -44,23 +61,35 @@ router.patch("/me", async (req, res) => {
   }
 });
 
-router.get("/", async (req, res) => { res.json(await getPrisma().client.findMany()); });
+/* These generic routes are locked to the caller's OWN studio — a photographer
+   token can never list, read, edit, create, or delete another tenant. Platform-
+   wide studio management lives in the super-admin console. */
+router.get("/", async (req, res) => {
+  const self = await getPrisma().client.findUnique({ where: { id: req.user.clientId } });
+  res.json(self ? [self] : []);
+});
 router.get("/:id", async (req, res) => {
-  const c = await getPrisma().client.findUnique({ where: { id: req.params.id } });
+  if (req.params.id !== req.user.clientId) return res.status(404).json({ message: "Client not found" });
+  const c = await getPrisma().client.findUnique({ where: { id: req.user.clientId } });
   if (!c) return res.status(404).json({ message: "Client not found" });
   res.json(c);
 });
-router.post("/", async (req, res) => {
-  try { res.status(201).json(await getPrisma().client.create({ data: req.body })); }
-  catch (err) { res.status(400).json({ message: err.message }); }
-});
+router.post("/", (_req, res) => res.status(403).json({ message: "Studios are created from the admin console" }));
 router.patch("/:id", async (req, res) => {
-  try { res.json(await getPrisma().client.update({ where: { id: req.params.id }, data: req.body })); }
-  catch (err) { res.status(400).json({ message: err.message }); }
+  if (req.params.id !== req.user.clientId) return res.status(403).json({ message: "You can only edit your own studio" });
+  try {
+    const data = {};
+    if (typeof req.body.template === "string") {
+      if (!TEMPLATES.includes(req.body.template)) return res.status(400).json({ message: `template must be one of: ${TEMPLATES.join(", ")}` });
+      data.template = req.body.template;
+    }
+    if (typeof req.body.accentColor === "string") data.accentColor = req.body.accentColor;
+    if (typeof req.body.studioName === "string") data.studioName = req.body.studioName;
+    if (typeof req.body.logoUrl === "string") data.logoUrl = req.body.logoUrl;
+    if (Object.keys(data).length === 0) return res.status(400).json({ message: "No updatable fields provided" });
+    res.json(await getPrisma().client.update({ where: { id: req.user.clientId }, data }));
+  } catch (err) { res.status(400).json({ message: err.message }); }
 });
-router.delete("/:id", async (req, res) => {
-  await getPrisma().client.delete({ where: { id: req.params.id } });
-  res.json({ message: "Client deleted" });
-});
+router.delete("/:id", (_req, res) => res.status(403).json({ message: "Contact support to close a studio account" }));
 
 export default router;

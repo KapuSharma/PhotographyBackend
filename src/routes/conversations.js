@@ -1,5 +1,6 @@
 import { Router } from "express";
 import getPrisma from "../db/prisma.js";
+import { updateOwned } from "../lib/scoped.js";
 
 const router = Router();
 
@@ -10,7 +11,7 @@ router.get("/", async (req, res) => {
   }));
 });
 router.get("/:id", async (req, res) => {
-  const convo = await getPrisma().aIConversation.findUnique({ where: { id: req.params.id } });
+  const convo = await getPrisma().aIConversation.findFirst({ where: { id: req.params.id, clientId: req.user.clientId } });
   if (!convo) return res.status(404).json({ message: "Conversation not found" });
   res.json(convo);
 });
@@ -23,10 +24,9 @@ router.post("/", async (req, res) => {
 });
 router.patch("/:id", async (req, res) => {
   try {
-    res.json(await getPrisma().aIConversation.update({
-      where: { id: req.params.id },
-      data: { messages: req.body.messages },
-    }));
+    const updated = await updateOwned(getPrisma().aIConversation, req.params.id, req.user.clientId, { messages: req.body.messages });
+    if (!updated) return res.status(404).json({ message: "Conversation not found" });
+    res.json(updated);
   } catch (err) { res.status(400).json({ message: err.message }); }
 });
 

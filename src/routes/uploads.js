@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import fs from "fs";
 import path from "path";
+import { requireActiveSubscription } from "../lib/subscription.js";
 
 const router = Router();
 const UPLOAD_DIR = path.resolve("uploads");
@@ -28,7 +29,8 @@ const upload = multer({
 });
 
 // POST /uploads — accepts one image file ("file"), returns its public URL.
-router.post("/", (req, res) => {
+// Gated: unlimited while the subscription is active, blocked once it expires.
+router.post("/", requireActiveSubscription, (req, res) => {
   upload.single("file")(req, res, (err) => {
     if (err) return res.status(400).json({ message: err.message });
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });

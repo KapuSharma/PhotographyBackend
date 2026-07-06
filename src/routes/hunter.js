@@ -2,7 +2,9 @@ import express from "express";
 import getPrisma, { ensureConnected } from "../db/prisma.js";
 import { runConnector, SOURCES } from "../hunter/connectors.js";
 import { applyRejectFilter } from "../hunter/filters.js";
-import { scoreLead } from "../hunter/scorer.js";
+import { scoreLead, defaultScorePrompt } from "../hunter/scorer.js";
+import { getSettings } from "../lib/settings.js";
+import { huntSourcesFor, platformDefaultKeywords } from "../lib/leadhunt.js";
 
 const router = express.Router();
 
@@ -36,6 +38,39 @@ router.put("/keywords", async (req, res) => {
 });
 
 /* ────────────────────────────────────────────────────────────
+   GET /api/hunter/score-prompt  — current Groq scoring prompt
+   PUT /api/hunter/score-prompt  — override it (empty / equal to
+   default clears the override and reverts to the built-in prompt)
+   ──────────────────────────────────────────────────────────── */
+router.get("/score-prompt", async (req, res) => {
+  try {
+    const cfg = await getPrisma().hunterConfig.findUnique({
+      where: { clientId: req.user.clientId },
+    });
+    const def = defaultScorePrompt();
+    res.json({ prompt: cfg?.scorePrompt || def, default: def, isCustom: !!cfg?.scorePrompt });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put("/score-prompt", async (req, res) => {
+  try {
+    const raw = typeof req.body?.prompt === "string" ? req.body.prompt.trim() : "";
+    const def = defaultScorePrompt();
+    const scorePrompt = (!raw || raw === def) ? null : raw;
+    const cfg = await getPrisma().hunterConfig.upsert({
+      where:  { clientId: req.user.clientId },
+      create: { clientId: req.user.clientId, scorePrompt },
+      update: { scorePrompt },
+    });
+    res.json({ prompt: cfg.scorePrompt || def, default: def, isCustom: !!cfg.scorePrompt });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/* ────────────────────────────────────────────────────────────
    GET /api/hunter/source-access
    Returns the source-access feasibility table required by
    HG's email (acceptance criterion #1).
@@ -60,13 +95,15 @@ router.get("/source-access", (req, res) => {
 router.get("/leads", async (req, res) => {
   try {
     await ensureConnected();
-    const { source, status, minScore, country, search, includeRejected } = req.query;
+    const { source, status, minScore, minBudget, country, search, includeRejected, runId } = req.query;
     const prisma = getPrisma();
     const where = { clientId: req.user.clientId };
     if (source && source !== "All") where.source = source;
     if (status && status !== "All") where.status = status;
     if (country && country !== "All") where.country = { contains: String(country), mode: "insensitive" };
     if (minScore) where.score = { gte: parseInt(minScore) };
+    if (minBudget) where.budgetMax = { gte: parseFloat(minBudget) };
+    if (runId) where.runId = String(runId);
     if (!includeRejected || includeRejected === "false") where.rejected = false;
     if (search) {
       where.OR = [
@@ -122,9 +159,9 @@ router.get("/stats", async (req, res) => {
 router.get("/run-stream", async (req, res) => {
   const prisma = getPrisma();
   const sourcesParam = req.query.sources ? String(req.query.sources).split(",") : null;
-  const sources = Array.isArray(sourcesParam) && sourcesParam.length
-    ? sourcesParam.filter(s => SOURCES.includes(s))
-    : SOURCES;
+  // Honour the platform-level source enable map — disabled sources are skipped.
+  const settings = await getSettings().catch(() => null);
+  const sources = huntSourcesFor(settings, sourcesParam);
 
   // SSE headers
   res.setHeader("Content-Type", "text/event-stream");
@@ -136,13 +173,19 @@ router.get("/run-stream", async (req, res) => {
     res.write(`data: ${JSON.stringify({ type, ...data })}\n\n`);
   };
 
+  let run = null;
   try {
     const cfg = await prisma.hunterConfig.findUnique({ where: { clientId: req.user.clientId } });
-    const customKeywords = Array.isArray(cfg?.keywords) && cfg.keywords.length ? cfg.keywords.map(String) : null;
+    const customKeywords = (Array.isArray(cfg?.keywords) && cfg.keywords.length ? cfg.keywords.map(String) : null) || platformDefaultKeywords(settings);
+    const customPrompt = cfg?.scorePrompt || null;
 
-    send("start", { sources, keywords: customKeywords || [] });
+    run = await prisma.hunterRun.create({
+      data: { clientId: req.user.clientId, sources, status: "running" },
+    });
 
-    const summary = { sources: {}, totalCaptured: 0, totalRejected: 0 };
+    send("start", { sources, keywords: customKeywords || [], runId: run.id, startedAt: run.startedAt });
+
+    const summary = { runId: run.id, startedAt: run.startedAt, sources: {}, totalCaptured: 0, totalRejected: 0 };
 
     for (const src of sources) {
       const out = { fetched: 0, captured: 0, rejected: 0 };
@@ -168,9 +211,10 @@ router.get("/run-stream", async (req, res) => {
             continue;
           }
           send("log", { source: src, message: `AI scoring lead ${i}/${items.length}: ${raw.title?.slice(0, 50)}...` });
-          const scored = await scoreLead(raw, customKeywords);
+          const scored = await scoreLead(raw, customKeywords, customPrompt);
           const data = {
             clientId: req.user.clientId,
+            runId: run.id,
             source: raw.source,
             sourceLeadId: String(raw.sourceLeadId || raw.sourceUrl || raw.title).slice(0, 240),
             sourceUrl: raw.sourceUrl || "",
@@ -194,10 +238,11 @@ router.get("/run-stream", async (req, res) => {
             status: "New",
           };
           try {
-            await prisma.hoiLead.upsert({
+            const saved = await prisma.hoiLead.upsert({
               where: { clientId_source_sourceLeadId: { clientId: req.user.clientId, source: data.source, sourceLeadId: data.sourceLeadId } },
               create: data,
               update: {
+                runId: data.runId,
                 title: data.title, description: data.description,
                 budgetMin: data.budgetMin, budgetMax: data.budgetMax,
                 country: data.country, skills: data.skills,
@@ -208,7 +253,13 @@ router.get("/run-stream", async (req, res) => {
               },
             });
             out.captured++;
-            send("lead_saved", { source: src, count: out.captured, score: scored.total, title: raw.title?.slice(0, 60) });
+            send("lead_saved", {
+              source: src,
+              count: out.captured,
+              score: scored.total,
+              title: raw.title?.slice(0, 60),
+              lead: saved,
+            });
           } catch (e) {
             send("log", { source: src, message: `Save error: ${e.message}` });
           }
@@ -221,13 +272,109 @@ router.get("/run-stream", async (req, res) => {
       summary.totalCaptured += out.captured;
       summary.totalRejected += out.rejected;
       send("source_done", { source: src, captured: out.captured, rejected: out.rejected });
+
+      // Persist progress after every source so totals survive an interrupted stream
+      try {
+        await prisma.hunterRun.update({
+          where: { id: run.id },
+          data: {
+            totalCaptured: summary.totalCaptured,
+            totalRejected: summary.totalRejected,
+            perSource: summary.sources,
+          },
+        });
+      } catch {}
     }
+
+    await prisma.hunterRun.update({
+      where: { id: run.id },
+      data: {
+        status: "completed",
+        finishedAt: new Date(),
+        totalCaptured: summary.totalCaptured,
+        totalRejected: summary.totalRejected,
+        perSource: summary.sources,
+      },
+    });
 
     send("done", { summary });
   } catch (err) {
+    if (run) {
+      try {
+        await prisma.hunterRun.update({
+          where: { id: run.id },
+          data: { status: "failed", finishedAt: new Date() },
+        });
+      } catch {}
+    }
     send("error", { message: err.message });
   } finally {
     res.end();
+  }
+});
+
+/* ────────────────────────────────────────────────────────────
+   GET /api/hunter/runs
+   Returns recent hunt runs for this client (newest first).
+   ──────────────────────────────────────────────────────────── */
+router.get("/runs", async (req, res) => {
+  try {
+    const prisma = getPrisma();
+
+    // Auto-mark runs stuck in 'running' for >10 minutes as 'abandoned'
+    const staleCutoff = new Date(Date.now() - 10 * 60 * 1000);
+    await prisma.hunterRun.updateMany({
+      where: {
+        clientId: req.user.clientId,
+        status: "running",
+        startedAt: { lt: staleCutoff },
+      },
+      data: { status: "abandoned", finishedAt: new Date() },
+    });
+
+    const runs = await prisma.hunterRun.findMany({
+      where: { clientId: req.user.clientId },
+      orderBy: { startedAt: "desc" },
+      take: 20,
+    });
+
+    // Overlay live captured-counts from the HoiLead table so the displayed
+    // totals + per-source breakdown reflect reality even for interrupted runs.
+    const runIds = runs.map(r => r.id);
+    const perSourceByRunId = {};
+    const totalByRunId = {};
+    if (runIds.length) {
+      const counts = await prisma.hoiLead.groupBy({
+        by: ["runId", "source"],
+        where: { clientId: req.user.clientId, runId: { in: runIds } },
+        _count: { _all: true },
+      });
+      for (const c of counts) {
+        if (!c.runId) continue;
+        if (!perSourceByRunId[c.runId]) perSourceByRunId[c.runId] = {};
+        perSourceByRunId[c.runId][c.source] = c._count._all;
+        totalByRunId[c.runId] = (totalByRunId[c.runId] || 0) + c._count._all;
+      }
+    }
+
+    const withLiveCounts = runs.map(r => {
+      const stored = (r.perSource && typeof r.perSource === "object") ? r.perSource : {};
+      const live = perSourceByRunId[r.id] || {};
+      // Merge: keep stored fields (rejected counts etc.) but override `captured` with live counts
+      const merged = { ...stored };
+      for (const [src, captured] of Object.entries(live)) {
+        merged[src] = { ...(merged[src] || {}), captured };
+      }
+      return {
+        ...r,
+        totalCaptured: totalByRunId[r.id] ?? r.totalCaptured,
+        perSource: merged,
+      };
+    });
+
+    res.json(withLiveCounts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -237,13 +384,13 @@ router.get("/run-stream", async (req, res) => {
 router.post("/run", async (req, res) => {
   try {
     const prisma = getPrisma();
-    const sources = Array.isArray(req.body?.sources) && req.body.sources.length
-      ? req.body.sources.filter(s => SOURCES.includes(s))
-      : SOURCES;
+    const settings = await getSettings().catch(() => null);
+    const sources = huntSourcesFor(settings, Array.isArray(req.body?.sources) ? req.body.sources : null);
 
-    // Load custom keywords for this client
+    // Load custom keywords for this client (falling back to the platform default set)
     const cfg = await prisma.hunterConfig.findUnique({ where: { clientId: req.user.clientId } });
-    const customKeywords = Array.isArray(cfg?.keywords) && cfg.keywords.length ? cfg.keywords.map(String) : null;
+    const customKeywords = (Array.isArray(cfg?.keywords) && cfg.keywords.length ? cfg.keywords.map(String) : null) || platformDefaultKeywords(settings);
+    const customPrompt = cfg?.scorePrompt || null;
 
     const summary = { sources: {}, totalCaptured: 0, totalRejected: 0, errors: [] };
 
@@ -258,7 +405,7 @@ router.post("/run", async (req, res) => {
         for (const raw of items) {
           const reject = applyRejectFilter(raw, customKeywords);
           if (reject.rejected) { out.rejected++; continue; }
-          const scored = await scoreLead(raw, customKeywords);
+          const scored = await scoreLead(raw, customKeywords, customPrompt);
           const data = {
             clientId: req.user.clientId,
             source: raw.source,
@@ -333,6 +480,8 @@ router.post("/run", async (req, res) => {
 router.post("/manual-linkedin", async (req, res) => {
   try {
     const prisma = getPrisma();
+    const cfg = await prisma.hunterConfig.findUnique({ where: { clientId: req.user.clientId } });
+    const customPrompt = cfg?.scorePrompt || null;
     const {
       linkedinUrl = "",
       personName = "",
@@ -362,7 +511,7 @@ router.post("/manual-linkedin", async (req, res) => {
       competitionCount: 0,
       rawPayload: { linkedinUrl, personName, companyName, postText, requirementSummary, serviceCategory, manual: true },
     };
-    const scored = await scoreLead(raw);
+    const scored = await scoreLead(raw, null, customPrompt);
 
     const created = await prisma.hoiLead.upsert({
       where: { clientId_source_sourceLeadId: { clientId: req.user.clientId, source: "LinkedIn", sourceLeadId: raw.sourceLeadId } },
@@ -434,7 +583,8 @@ router.post("/leads/:id/rescore", async (req, res) => {
       where: { id: req.params.id, clientId: req.user.clientId },
     });
     if (!lead) return res.status(404).json({ error: "Not found" });
-    const scored = await scoreLead(lead);
+    const cfg = await prisma.hunterConfig.findUnique({ where: { clientId: req.user.clientId } });
+    const scored = await scoreLead(lead, null, cfg?.scorePrompt || null);
     const updated = await prisma.hoiLead.update({
       where: { id: req.params.id },
       data: {

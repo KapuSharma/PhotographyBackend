@@ -7,6 +7,10 @@
     "dev": "nodemon",
     "start": "node src/index.js",
     "seed": "node src/seed.js",
+    "seed:admin": "node --env-file=.env src/scripts/seedAdmin.js",
+    "seed:plans": "node --env-file=.env src/scripts/seedPlans.js",
+    "seed:blog": "node --env-file=.env src/scripts/seedBlog.js",
+    "test:isolation": "node --env-file=.env src/scripts/isolationTest.js",
     "build": "prisma generate",
     "postinstall": "prisma generate"
   },

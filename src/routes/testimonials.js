@@ -1,5 +1,6 @@
 import { Router } from "express";
 import getPrisma from "../db/prisma.js";
+import { updateOwned, deleteOwned } from "../lib/scoped.js";
 
 const router = Router();
 
@@ -31,14 +32,17 @@ router.post("/", async (req, res) => {
 router.patch("/:id", async (req, res) => {
   try {
     const { clientId, id, ...data } = req.body;
-    res.json(await getPrisma().testimonial.update({ where: { id: req.params.id }, data }));
+    const updated = await updateOwned(getPrisma().testimonial, req.params.id, req.user.clientId, data);
+    if (!updated) return res.status(404).json({ message: "Testimonial not found" });
+    res.json(updated);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 });
 
 router.delete("/:id", async (req, res) => {
-  await getPrisma().testimonial.delete({ where: { id: req.params.id } });
+  const ok = await deleteOwned(getPrisma().testimonial, req.params.id, req.user.clientId);
+  if (!ok) return res.status(404).json({ message: "Testimonial not found" });
   res.json({ message: "Testimonial deleted" });
 });
 
