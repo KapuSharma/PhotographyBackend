@@ -36,9 +36,12 @@ export default function getPrisma() {
       keepAliveInitialDelayMillis: 5000,
     });
 
-    // Remove broken connections from pool automatically
+    // Remove broken connections from pool automatically. Also invalidate the
+    // "warm" cache so the next request re-probes and returns a clean 503 instead
+    // of letting a query fail as an unhandled rejection while the DB is down.
     _pool.on("error", (err) => {
       console.warn("[db] pool error (reconnecting):", err.message);
+      _lastOkAt = 0;
     });
 
     const adapter = new PrismaPg(_pool);

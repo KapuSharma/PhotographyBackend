@@ -280,6 +280,13 @@ model PhotographerProfile {
   email                String?
   yearsExperience      String?
   bio                  String?
+  // Location — city/state/country drive the studio's display currency, plus the
+  // list of areas the photographer will travel to for shoots.
+  city                 String?
+  state                String?
+  country              String?
+  currency             String?
+  serviceAreas         Json?    @default("[]")
   // Specialisations
   niches               Json?    @default("[]")
   shootingStyle        String?

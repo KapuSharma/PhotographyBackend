@@ -46,7 +46,9 @@ function parseBudgetEstimate(str) {
   if (!str) return null;
   const nums = String(str).replace(/,/g, "").match(/\d+(?:\.\d+)?/g);
   if (!nums || !nums.length) return null;
-  const vals = nums.map(Number).filter(n => !Number.isNaN(n));
+  // Drop NaN and impossibly-large figures so a garbage budget (e.g. a string of
+  // 9s) can never become an astronomical estimatedValue.
+  const vals = nums.map(Number).filter(n => Number.isFinite(n) && n > 0 && n < 1e9);
   if (!vals.length) return null;
   return Math.max(...vals);
 }
@@ -116,22 +118,26 @@ router.get("/stats", async (req, res) => {
     }),
   ]);
 
-  const valueOf = l => (typeof l.estimatedValue === "number" ? l.estimatedValue : (parseBudgetEstimate(l.budget) || 0));
+  // Guard every deal value: ignore negatives, NaN, and impossibly-large amounts
+  // (garbage / test input) so a single bad row can't blow up the whole dashboard.
+  const SANE_MAX = 1e9; // 1 billion — well above any real photography deal
+  const valueOf = l => {
+    const v = typeof l.estimatedValue === "number" ? l.estimatedValue : parseBudgetEstimate(l.budget);
+    return Number.isFinite(v) && v > 0 && v < SANE_MAX ? v : 0;
+  };
+  // Cap runaway percentage deltas so the UI never shows "2.3e+26%".
+  const pct = (curr, prev) => (prev > 0 ? Math.max(-999, Math.min(999, Math.round(((curr - prev) / prev) * 100))) : null);
 
   const stageBreakdown = all.reduce((acc, l) => { acc[l.status] = (acc[l.status] || 0) + 1; return acc; }, {});
   const active = all.filter(l => l.status !== "Lost");
   const pipelineTotal = active.reduce((s, l) => s + valueOf(l), 0);
   const pipelineLastTotal = pipelineLastMonth.reduce((s, l) => s + valueOf(l), 0);
-  const pipelineDelta = pipelineLastTotal > 0
-    ? Math.round(((pipelineTotal - pipelineLastTotal) / pipelineLastTotal) * 100)
-    : null;
+  const pipelineDelta = pct(pipelineTotal, pipelineLastTotal);
 
   const wonCount = wonThisMonth.length;
   const wonAmount = wonThisMonth.reduce((s, l) => s + valueOf(l), 0);
   const wonLastAmount = wonLastMonth.reduce((s, l) => s + valueOf(l), 0);
-  const wonDelta = wonLastAmount > 0
-    ? Math.round(((wonAmount - wonLastAmount) / wonLastAmount) * 100)
-    : null;
+  const wonDelta = pct(wonAmount, wonLastAmount);
 
   const stuckDeals = active.filter(l => {
     const last = new Date(l.lastActivityAt || l.updatedAt || l.createdAt);
@@ -263,7 +269,9 @@ router.post("/:id/insights", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const score = calculateLeadScore(req.body);
-    const estimatedValue = req.body.estimatedValue ?? parseBudgetEstimate(req.body.budget);
+    const rawEstimate = req.body.estimatedValue ?? parseBudgetEstimate(req.body.budget);
+    // Reject impossible values at the door so the dashboard aggregates stay sane.
+    const estimatedValue = Number.isFinite(rawEstimate) && rawEstimate > 0 && rawEstimate < 1e9 ? rawEstimate : null;
     const now = new Date();
     const lead = await getPrisma().lead.create({
       data: {

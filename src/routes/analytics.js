@@ -49,6 +49,10 @@ router.get("/", async (req, res) => {
       ? Math.round(leads.reduce((sum, l) => sum + (l.score || 0), 0) / leads.length)
       : 0;
 
+    // Guard against garbage / test amounts (negatives, NaN, impossibly large)
+    // so revenue totals never render as "$1e+27K".
+    const amt = (p) => (Number.isFinite(p.amount) && p.amount > 0 && p.amount < 1e9 ? p.amount : 0);
+
     // ── Revenue by month (last 6 months) ─────────────────────────────────────
     const now = new Date();
     const monthlyRevenue = [];
@@ -65,11 +69,11 @@ router.get("/", async (req, res) => {
 
       const confirmed = monthPayments
         .filter(p => p.status === 'Paid')
-        .reduce((sum, p) => sum + (p.amount || 0), 0);
+        .reduce((sum, p) => sum + amt(p), 0);
 
       const pipeline = monthPayments
         .filter(p => p.status === 'Draft' || p.status === 'Sent')
-        .reduce((sum, p) => sum + (p.amount || 0), 0);
+        .reduce((sum, p) => sum + amt(p), 0);
 
       monthlyRevenue.push({ label, confirmed, pipeline, total: confirmed + pipeline });
     }
@@ -77,11 +81,11 @@ router.get("/", async (req, res) => {
     // ── Total revenue ────────────────────────────────────────────────────────
     const totalRevenue = payments
       .filter(p => p.status === 'Paid')
-      .reduce((sum, p) => sum + (p.amount || 0), 0);
+      .reduce((sum, p) => sum + amt(p), 0);
 
     const pipelineRevenue = payments
       .filter(p => p.status === 'Draft' || p.status === 'Sent')
-      .reduce((sum, p) => sum + (p.amount || 0), 0);
+      .reduce((sum, p) => sum + amt(p), 0);
 
     // ── Chatbot stats ────────────────────────────────────────────────────────
     const totalChats     = conversations.length;

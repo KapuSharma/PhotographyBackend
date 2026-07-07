@@ -20,7 +20,9 @@ router.put("/", async (req, res) => {
   try {
     const {
       fullName, studioName, location, website, phone, email,
-      yearsExperience, bio, niches, shootingStyle, editingStyle,
+      yearsExperience, bio,
+      city, state, country, currency, serviceAreas,
+      niches, shootingStyle, editingStyle,
       minBudget, depositPercent, paymentTerms, avgProjectValue,
       bookingLeadTime, turnaround, travelsInterstate, travelsInternational,
       idealClientDesc, pastClients,
@@ -36,6 +38,11 @@ router.put("/", async (req, res) => {
       email:                email                ?? null,
       yearsExperience:      yearsExperience      ?? null,
       bio:                  bio                  ?? null,
+      city:                 city                 ?? null,
+      state:                state                ?? null,
+      country:              country              ?? null,
+      currency:             currency             ?? null,
+      serviceAreas:         Array.isArray(serviceAreas) ? serviceAreas : [],
       niches:               Array.isArray(niches) ? niches : [],
       shootingStyle:        shootingStyle        ?? null,
       editingStyle:         editingStyle         ?? null,
@@ -69,9 +76,26 @@ router.put("/", async (req, res) => {
       update: data,
     });
 
+    // The studio / brand name is the single source of truth for site branding —
+    // mirror it onto the Client so the public website header/footer and the CMS
+    // sidebar all stay in sync automatically.
+    if (typeof studioName === "string" && studioName.trim()) {
+      await getPrisma().client.update({
+        where: { id: req.user.clientId },
+        data: { studioName: studioName.trim() },
+      }).catch((e) => console.warn("[profile] studioName sync failed:", e.message));
+    }
+
     res.json(profile);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    // Log the raw error for debugging, but return a clean, human-readable message.
+    console.error("[profile] save failed:", err.message);
+    let message = "Couldn't save your profile. Please try again.";
+    if (err.code === "P2002") message = "That value is already in use by another account.";
+    else if (/Unknown argument|Invalid `prisma|Unknown field/.test(err.message || "")) {
+      message = "The server needs a restart to accept these fields — please restart the backend and try again.";
+    }
+    res.status(400).json({ message });
   }
 });
 
