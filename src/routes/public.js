@@ -61,7 +61,6 @@ router.get("/site", async (req, res) => {
         status: true,
         deletedAt: true,
         siteStatus: true,
-        currency: true,
         profile: { select: { currency: true, country: true } },
         aiConfig: { select: { aiAssistantName: true, greetingMessage: true } },
         siteContent: { select: { hero: true, brand: true, trust: true, cta: true, about: true, contact: true, galleryCategories: true, header: true, footer: true, sections: true, galleryPage: true, servicesPage: true, reviewsPage: true, blogPage: true, blogPostPage: true, packagesPage: true, commonSections: true } },
@@ -99,10 +98,10 @@ router.get("/site", async (req, res) => {
     if (client.deletedAt || (client.status || "active").toLowerCase() === "suspended" || client.siteStatus === "offline") {
       return res.status(403).json({ message: "This site is currently unavailable.", unavailable: true });
     }
-    const { status, deletedAt, siteStatus, profile, currency, ...rest } = client;
-    // Resolve the studio's display currency (Profile → Country wins, else the
-    // Client default) so the frontend can render the right symbol automatically.
-    const site = { ...rest, currency: profile?.currency || currency || "INR" };
+    const { status, deletedAt, siteStatus, profile, ...rest } = client;
+    // Resolve the studio's display currency from Profile → Country so the
+    // frontend can render the right symbol automatically (defaults to INR).
+    const site = { ...rest, currency: profile?.currency || "INR" };
     res.json(site);
   } catch (err) {
     res.status(500).json({ message: err.message });
