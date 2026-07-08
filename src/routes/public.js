@@ -61,16 +61,18 @@ router.get("/site", async (req, res) => {
         status: true,
         deletedAt: true,
         siteStatus: true,
+        currency: true,
+        profile: { select: { currency: true, country: true } },
         aiConfig: { select: { aiAssistantName: true, greetingMessage: true } },
         siteContent: { select: { hero: true, brand: true, trust: true, cta: true, about: true, contact: true, galleryCategories: true, header: true, footer: true, sections: true, galleryPage: true, servicesPage: true, reviewsPage: true, blogPage: true, blogPostPage: true, packagesPage: true, commonSections: true } },
         services: {
           where: { active: true },
-          select: { id: true, name: true, price: true, startingPrice: true, description: true, category: true, content: true, images: true },
+          select: { id: true, name: true, price: true, priceMax: true, startingPrice: true, description: true, category: true, content: true, images: true, rating: true, reviews: true, features: true },
         },
         packages: {
           where: { active: true },
           orderBy: { order: "asc" },
-          select: { id: true, name: true, price: true, duration: true, bestFor: true, includes: true, popular: true, content: true, images: true },
+          select: { id: true, name: true, price: true, priceMax: true, duration: true, bestFor: true, includes: true, popular: true, content: true, images: true, badge: true, category: true, description: true },
         },
         testimonials: {
           where: { active: true },
@@ -97,7 +99,10 @@ router.get("/site", async (req, res) => {
     if (client.deletedAt || (client.status || "active").toLowerCase() === "suspended" || client.siteStatus === "offline") {
       return res.status(403).json({ message: "This site is currently unavailable.", unavailable: true });
     }
-    const { status, deletedAt, siteStatus, ...site } = client;
+    const { status, deletedAt, siteStatus, profile, currency, ...rest } = client;
+    // Resolve the studio's display currency (Profile → Country wins, else the
+    // Client default) so the frontend can render the right symbol automatically.
+    const site = { ...rest, currency: profile?.currency || currency || "INR" };
     res.json(site);
   } catch (err) {
     res.status(500).json({ message: err.message });

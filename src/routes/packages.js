@@ -4,6 +4,12 @@ import { updateOwned, deleteOwned } from "../lib/scoped.js";
 
 const router = Router();
 
+// Whitelist the real Package columns so a stray/unknown field from the client
+// can never 400 the whole save.
+const PACKAGE_FIELDS = ["name", "price", "priceMax", "duration", "bestFor", "includes", "popular", "active", "order", "content", "images", "badge", "category", "description"];
+const pickPackage = (body = {}) =>
+  PACKAGE_FIELDS.reduce((acc, k) => { if (body[k] !== undefined) acc[k] = body[k]; return acc; }, {});
+
 router.get("/", async (req, res) => {
   try {
     res.json(
@@ -21,7 +27,7 @@ router.post("/", async (req, res) => {
   try {
     res.status(201).json(
       await getPrisma().package.create({
-        data: { ...req.body, clientId: req.user.clientId },
+        data: { ...pickPackage(req.body), clientId: req.user.clientId },
       })
     );
   } catch (err) {
@@ -31,8 +37,7 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   try {
-    // clientId is not editable from the body
-    const { clientId, id, ...data } = req.body;
+    const data = pickPackage(req.body);
     const updated = await updateOwned(getPrisma().package, req.params.id, req.user.clientId, data);
     if (!updated) return res.status(404).json({ message: "Package not found" });
     res.json(updated);

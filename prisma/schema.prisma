@@ -115,6 +115,7 @@ model Package {
   clientId  String
   name      String
   price     String?
+  priceMax  String?
   duration  String?
   bestFor   String?
   includes  String[] @default([])
@@ -123,6 +124,9 @@ model Package {
   order     Int      @default(0)
   content   String?
   images    String[] @default([])
+  badge       String?
+  category    String?
+  description String?
 
   client    Client   @relation(fields: [clientId], references: [id])
 }
@@ -190,12 +194,16 @@ model Service {
   name          String
   description   String?
   price         String?
+  priceMax      String?
   duration      String?
   startingPrice Float?
   category      String?
   content       String?
   images        String[] @default([])
   active        Boolean @default(true)
+  rating        String?
+  reviews       String?
+  features      String[] @default([])
 
   client        Client  @relation(fields: [clientId], references: [id])
 }
