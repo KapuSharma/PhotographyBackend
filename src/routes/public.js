@@ -378,6 +378,17 @@ router.post("/ask-ai", rateLimit({ windowMs: 60000, max: 20 }), async (req, res)
         studioName: true,
         siteContent: { select: { about: true, contact: true } },
         aiConfig: { select: { aiAssistantName: true, tone: true, primaryNiche: true } },
+        profile: {
+          select: {
+            fullName: true, bio: true, shootingStyle: true, editingStyle: true, niches: true,
+            minBudget: true, turnaround: true, bookingLeadTime: true, depositPercent: true,
+            paymentTerms: true, avgProjectValue: true,
+            idealClientDesc: true, qualifyingQuestions: true, dealBreakers: true, closingLine: true,
+            responseStyle: true,
+            city: true, state: true, country: true, serviceAreas: true,
+            travelsInterstate: true, travelsInternational: true,
+          },
+        },
         services: {
           where: { active: true },
           select: { name: true, price: true, startingPrice: true, description: true },
@@ -419,6 +430,9 @@ router.post("/ask-ai", rateLimit({ windowMs: 60000, max: 20 }), async (req, res)
       packages: client.packages,
       faqs: client.faqs,
       reviewCount: client._count?.testimonials || 0,
+      // The photographer's AI Training Profile — teaches the assistant how to
+      // talk, qualify, and close exactly as the studio configured it.
+      profile: client.profile || null,
     };
 
     try {

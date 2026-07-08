@@ -35,9 +35,16 @@ router.get("/", async (req, res) => {
     };
 
     // ── Lead sources ─────────────────────────────────────────────────────────
+    // The website chatbot has been labelled a few ways ("AI Chatbot", "AI
+    // Assistant", "AI Chat") — collapse them into one canonical channel.
+    const normalizeSource = (s) => {
+      const v = String(s || 'Unknown').trim();
+      if (/^ai[\s-]*(chatbot|chat|assistant)/i.test(v)) return 'AI Chatbot';
+      return v || 'Unknown';
+    };
     const sourceMap = {};
     for (const l of leads) {
-      const s = l.source || 'Unknown';
+      const s = normalizeSource(l.source);
       sourceMap[s] = (sourceMap[s] || 0) + 1;
     }
     const leadSources = Object.entries(sourceMap)

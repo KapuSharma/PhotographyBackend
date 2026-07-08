@@ -51,6 +51,7 @@ router.patch("/me", async (req, res) => {
     if (typeof req.body.accentColor === "string") data.accentColor = req.body.accentColor;
     if (typeof req.body.studioName === "string") data.studioName = req.body.studioName;
     if (typeof req.body.logoUrl === "string") data.logoUrl = req.body.logoUrl;
+    if (req.body.taxConfig && typeof req.body.taxConfig === "object") data.taxConfig = req.body.taxConfig;
     if (Object.keys(data).length === 0) {
       return res.status(400).json({ message: "No updatable fields provided" });
     }

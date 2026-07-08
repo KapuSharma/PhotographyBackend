@@ -84,6 +84,33 @@ function buildStudioContext(studio) {
     lines.push(`\nThis studio has ${studio.reviewCount} client review(s) on the website.`);
   }
 
+  // ── Photographer's AI Training Profile ──
+  const profile = studio.profile;
+  if (profile) {
+    const p = [];
+    if (profile.fullName) p.push(`Lead photographer: ${profile.fullName}.`);
+    if (profile.bio) p.push(`About the photographer: ${plain(profile.bio, 400)}`);
+    const style = [profile.shootingStyle, profile.editingStyle].filter(Boolean).join(", ");
+    if (style) p.push(`Shooting & editing style: ${style}.`);
+    if (Array.isArray(profile.niches) && profile.niches.length) p.push(`Specialities: ${profile.niches.join(", ")}.`);
+    if (profile.minBudget) p.push(`Minimum budget the studio takes on: ${profile.minBudget}.`);
+    if (profile.avgProjectValue) p.push(`Typical project value: ${profile.avgProjectValue}.`);
+    if (profile.turnaround) p.push(`Delivery / turnaround: ${profile.turnaround}.`);
+    if (profile.bookingLeadTime) p.push(`Minimum booking lead time: ${profile.bookingLeadTime}.`);
+    const pay = [profile.depositPercent ? `${profile.depositPercent}% deposit` : "", profile.paymentTerms].filter(Boolean).join(" — ");
+    if (pay) p.push(`Payment terms: ${pay}.`);
+    const base = [profile.city, profile.state, profile.country].filter(Boolean).join(", ");
+    if (base) p.push(`Based in: ${base}.`);
+    if (Array.isArray(profile.serviceAreas) && profile.serviceAreas.length) p.push(`Travels for shoots to: ${profile.serviceAreas.join(", ")}.`);
+    if (profile.travelsInterstate && profile.travelsInterstate !== "No") p.push(`Travels interstate: ${profile.travelsInterstate}.`);
+    if (profile.travelsInternational && profile.travelsInternational !== "No") p.push(`Travels internationally: ${profile.travelsInternational}.`);
+    if (profile.idealClientDesc) p.push(`Ideal client profile: ${plain(profile.idealClientDesc, 300)}`);
+    if (p.length) {
+      lines.push("\nABOUT THE PHOTOGRAPHER (use to answer naturally and qualify leads):");
+      p.forEach((x) => lines.push(`- ${x}`));
+    }
+  }
+
   return lines.join("\n");
 }
 
@@ -91,15 +118,33 @@ function buildSystemPrompt(studio) {
   const name = studio.assistantName || "the studio assistant";
   const studioName = studio.studioName || "the studio";
   const tone = studio.tone || "warm and professional";
+  const profile = studio.profile || {};
 
-  return `You are ${name}, the friendly AI assistant on the website of ${studioName}, a photography studio. Your job is to help website visitors and turn them into happy, booked clients.
+  // Behaviour lines derived from the photographer's AI Training Profile.
+  const behaviour = [];
+  if (profile.responseStyle) behaviour.push(`- The photographer wants replies to feel ${profile.responseStyle.toLowerCase()}. Blend this with your ${tone} tone.`);
+  if (profile.qualifyingQuestions && String(profile.qualifyingQuestions).trim()) {
+    behaviour.push(`- When it fits naturally, gently ask qualifying questions to understand the lead. The photographer's preferred questions: ${plain(profile.qualifyingQuestions, 400)}`);
+  }
+  if (profile.dealBreakers && String(profile.dealBreakers).trim()) {
+    behaviour.push(`- The studio does NOT take on: ${plain(profile.dealBreakers, 300)}. If a request clearly matches, be honest and polite, and don't over-promise.`);
+  }
+  if (profile.minBudget) {
+    behaviour.push(`- The studio's minimum budget is ${profile.minBudget}. If a visitor's budget is clearly below this, stay kind and suggest the closest-fit option or the contact page — never be dismissive.`);
+  }
+  if (profile.closingLine && String(profile.closingLine).trim()) {
+    behaviour.push(`- When the visitor seems ready to move forward, encourage them warmly in the spirit of: "${plain(profile.closingLine, 200)}"`);
+  }
+
+  return `You are ${name}, the friendly AI assistant on the website of ${studioName}, a photography studio. Your job is to help website visitors, answer their questions clearly, and turn them into happy, booked clients.
 
 HOW TO RESPOND:
+- Introduce yourself by name ("${name}") in your very first reply of the conversation, then get straight to helping. Don't repeat the introduction after that.
 - Be ${tone}, welcoming and genuinely helpful. Write like a real person, not a brochure.
 - Keep answers short and easy to understand: usually 2–4 sentences. Use simple language, no jargon.
 - You may use a light bit of formatting (a short bullet list) when listing packages or services, but keep it brief.
-- Always be encouraging and guide the visitor toward a next step (view packages, check availability, or book a session) when it fits naturally.
-
+- Always guide the visitor toward a helpful next step (view packages, check availability, or book a session) when it fits naturally.
+${behaviour.length ? `\nHOW THIS PHOTOGRAPHER WANTS YOU TO QUALIFY & CLOSE:\n${behaviour.join("\n")}\n` : ""}
 GROUNDING RULES (very important):
 - Only use the STUDIO INFORMATION provided below. Never invent prices, packages, dates, or facts that are not given.
 - If you don't know something (e.g. an exact price that isn't listed, or live calendar availability), say so honestly and point them to the Booking page or the studio's contact details.

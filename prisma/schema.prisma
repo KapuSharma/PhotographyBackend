@@ -41,6 +41,9 @@ model Client {
   domainToken      String?
   sslStatus        String    @default("none")   // none | pending | issued | failed
   provisionStatus  String    @default("ready")  // ready | pending | failed
+  // Invoice tax config: { enabled, label, rate, number, inclusive } — drives
+  // automatic tax calculation on payments/invoices per the studio's country.
+  taxConfig    Json?
   createdAt    DateTime  @default(now())
   // Soft-delete / archive. Non-null = archived; recoverable within the retention
   // window before permanent deletion. Excluded from normal listings.
@@ -476,7 +479,17 @@ model Payment {
   clientId    String
   leadId      String?
   company     String
+  // Human-readable, per-studio sequential invoice number (e.g. INV-2026-0001).
+  // Assigned once at creation; unique within a studio so numbers never collide.
+  invoiceNo   String?
+  // Customer contact for the billed-to block / emailing the invoice.
+  billEmail   String?
   amount      Float    @default(0)
+  // Invoice tax breakdown (amount = subtotal + taxAmount when tax applies).
+  subtotal    Float?
+  taxRate     Float?
+  taxAmount   Float?
+  taxLabel    String?
   type        String
   status      String   @default("Draft")
   paymentDate String?
@@ -487,6 +500,8 @@ model Payment {
   updatedAt   DateTime @updatedAt
 
   client      Client   @relation(fields: [clientId], references: [id])
+
+  @@unique([clientId, invoiceNo])
 }
 
 model Meeting {
